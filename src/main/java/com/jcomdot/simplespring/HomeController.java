@@ -30,8 +30,30 @@ public class HomeController {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
+
+		ActorDao dao = new ActorDao();
+		Actor actor = new Actor();
+		actor.setFirstName("토뿡");
+		actor.setLastName("장");
+
+		try {
+			dao.add(actor);
+			logger.info("등록 성공!!!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Actor actor2 = null;
+		try {
+			int lastIdx = dao.getLastIdx();
+			actor2 = dao.get(lastIdx);
+			logger.info("조회 성공!!!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		model.addAttribute("serverTime", formattedDate );
+		model.addAttribute("serverTime", formattedDate);
+		model.addAttribute("actor", actor2);
 		
 		return "home";
 	}

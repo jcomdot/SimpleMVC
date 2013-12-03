@@ -11,5 +11,11 @@
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
+<c:if test="${not empty actor}">
+<p>ID			: <c:out value="${actor.actorId}" /></p>
+<p>First Name	: <c:out value="${actor.firstName}" /></p>
+<p>Last Name	: <c:out value="${actor.lastName}" /></p>
+<p>Last Update	: <c:out value="${actor.lastUpdate}" /></p>
+</c:if>
 </body>
 </html>
