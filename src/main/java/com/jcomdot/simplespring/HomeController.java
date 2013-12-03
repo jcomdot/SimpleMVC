@@ -31,6 +31,7 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 
+		
 		ActorDao dao = new ActorDao();
 		Actor actor = new Actor();
 		actor.setFirstName("토뿡");
