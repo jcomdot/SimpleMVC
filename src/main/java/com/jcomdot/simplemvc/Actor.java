@@ -1,4 +1,4 @@
-package com.jcomdot.simplespring;
+package com.jcomdot.simplemvc;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.jcomdot.simplespring;
+package com.jcomdot.simplemvc;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -31,8 +31,8 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 
-		
-		ActorDao dao = new ActorDao();
+
+		ActorDao dao = new DaoFactory().actorDao();
 		Actor actor = new Actor();
 		actor.setFirstName("토뿡");
 		actor.setLastName("장");

@@ -1,17 +1,18 @@
-package com.jcomdot.simplespring;
+package com.jcomdot.simplemvc;
 
 import java.sql.*;
 
 public class ActorDao {
+
+	private ConnectionMaker connectionMaker;
 	
-	private Connection getConnection() throws ClassNotFoundException, SQLException {
-		Class.forName("org.postgresql.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost/pagila", "postgres", "fkfkvhxm");
-		return conn;
+	public ActorDao(ConnectionMaker connectionMaker) {
+		this.connectionMaker = connectionMaker;
 	}
 	
 	public void add(Actor actor) throws ClassNotFoundException, SQLException {
-		Connection conn = getConnection();
+		
+		Connection conn = this.connectionMaker.makeConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("insert into actor(first_name, last_name, last_update) values(?, ?, localtimestamp)");
 		ps.setString(1, actor.getFirstName());
@@ -27,7 +28,7 @@ public class ActorDao {
 	public int getLastIdx() throws ClassNotFoundException, SQLException {
 		int idx = -1;
 		
-		Connection conn = getConnection();
+		Connection conn = this.connectionMaker.makeConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("select last_value from actor_actor_id_seq");
 		
@@ -47,7 +48,7 @@ public class ActorDao {
 		
 		Actor actor = null;
 		
-		Connection conn = getConnection();
+		Connection conn = this.connectionMaker.makeConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("select * from actor where actor_id = ?");
 		ps.setInt(1, id);
