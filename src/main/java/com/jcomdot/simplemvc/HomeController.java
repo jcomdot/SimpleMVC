@@ -6,6 +6,8 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +33,8 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 
-
-		ActorDao dao = new DaoFactory().actorDao();
+		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+		ActorDao dao = context.getBean("actorDao", ActorDao.class);
 		Actor actor = new Actor();
 		actor.setFirstName("토뿡");
 		actor.setLastName("장");
