@@ -33,8 +33,11 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 
+		
 		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 		ActorDao dao = context.getBean("actorDao", ActorDao.class);
+		((AnnotationConfigApplicationContext)context).close();
+		
 		Actor actor = new Actor();
 		actor.setFirstName("토뿡");
 		actor.setLastName("장");
