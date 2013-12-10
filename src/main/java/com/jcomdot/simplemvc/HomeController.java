@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,25 +25,29 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+		logger.debug("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
 
-		
-		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+		// DI(Dependency Injection)
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
 		ActorDao dao = context.getBean("actorDao", ActorDao.class);
-		((AnnotationConfigApplicationContext)context).close();
+		CountingConnectionMaker ccm = context.getBean("connectionMaker", CountingConnectionMaker.class);
+		context.close();
+		
+		// DL(Dependency Lookup)
+//		ActorDao dao = new ActorDao();
 		
 		Actor actor = new Actor();
-		actor.setFirstName("토뿡");
-		actor.setLastName("장");
+		actor.setFirstName("Tobbung");
+		actor.setLastName("Jang");
 
 		try {
 			dao.add(actor);
-			logger.info("등록 성공!!!");
+			logger.debug("등록 성공!!!({})", ccm.getCounter());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -53,7 +56,7 @@ public class HomeController {
 		try {
 			int lastIdx = dao.getLastIdx();
 			actor2 = dao.get(lastIdx);
-			logger.info("조회 성공!!!");
+			logger.debug("조회 성공!!!({})", ccm.getCounter());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

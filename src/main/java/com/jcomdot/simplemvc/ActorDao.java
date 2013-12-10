@@ -6,10 +6,10 @@ public class ActorDao {
 
 	private ConnectionMaker connectionMaker;
 	
-	public ActorDao(ConnectionMaker connectionMaker) {
+	public void setConnectionMaker(ConnectionMaker connectionMaker) {
 		this.connectionMaker = connectionMaker;
 	}
-	
+
 	public void add(Actor actor) throws ClassNotFoundException, SQLException {
 		
 		Connection conn = this.connectionMaker.makeConnection();
