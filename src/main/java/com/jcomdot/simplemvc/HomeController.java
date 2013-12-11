@@ -33,9 +33,9 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 
 		// DI(Dependency Injection)
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 		ActorDao dao = context.getBean("actorDao", ActorDao.class);
-		CountingConnectionMaker ccm = context.getBean("connectionMaker", CountingConnectionMaker.class);
+//		CountingConnectionMaker ccm = context.getBean("connectionMaker", CountingConnectionMaker.class);
 		context.close();
 		
 		// DL(Dependency Lookup)
@@ -47,7 +47,7 @@ public class HomeController {
 
 		try {
 			dao.add(actor);
-			logger.debug("등록 성공!!!({})", ccm.getCounter());
+			logger.debug("등록 성공!!!({})");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -56,7 +56,7 @@ public class HomeController {
 		try {
 			int lastIdx = dao.getLastIdx();
 			actor2 = dao.get(lastIdx);
-			logger.debug("조회 성공!!!({})", ccm.getCounter());
+			logger.debug("조회 성공!!!({})");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
