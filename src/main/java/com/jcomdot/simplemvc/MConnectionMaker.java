@@ -9,7 +9,7 @@ public class MConnectionMaker implements ConnectionMaker {
 	@Override
 	public Connection makeConnection() throws ClassNotFoundException, SQLException {
 		
-		Class.forName("org.mariadb.Driver");
+		Class.forName("org.mariadb.jdbc.Driver");
 		Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost/sakila", "root", "fkfkvhxm");
 
 		return conn;

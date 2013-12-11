@@ -6,7 +6,8 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,10 +34,11 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 
 		// DI(Dependency Injection)
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+//		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+		ApplicationContext context = new GenericXmlApplicationContext("spring/context/applicationContext.xml");
 		ActorDao dao = context.getBean("actorDao", ActorDao.class);
 //		CountingConnectionMaker ccm = context.getBean("connectionMaker", CountingConnectionMaker.class);
-		context.close();
+		((GenericXmlApplicationContext) context).close();
 		
 		// DL(Dependency Lookup)
 //		ActorDao dao = new ActorDao();
@@ -47,7 +49,7 @@ public class HomeController {
 
 		try {
 			dao.add(actor);
-			logger.debug("등록 성공!!!({})");
+			logger.debug("등록 성공!!!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -56,7 +58,7 @@ public class HomeController {
 		try {
 			int lastIdx = dao.getLastIdx();
 			actor2 = dao.get(lastIdx);
-			logger.debug("조회 성공!!!({})");
+			logger.debug("조회 성공!!!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

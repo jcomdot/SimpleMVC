@@ -30,7 +30,8 @@ public class ActorDao {
 		
 		Connection conn = this.connectionMaker.makeConnection();
 		
-		PreparedStatement ps = conn.prepareStatement("select last_value from actor_actor_id_seq");
+//		PreparedStatement ps = conn.prepareStatement("select last_value from actor_actor_id_seq");
+		PreparedStatement ps = conn.prepareStatement("select max(actor_id) as last_value from actor");
 		
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
