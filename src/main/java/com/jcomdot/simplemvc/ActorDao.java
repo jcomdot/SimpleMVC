@@ -1,18 +1,24 @@
 package com.jcomdot.simplemvc;
 
 import java.sql.*;
+import javax.sql.DataSource;
 
 public class ActorDao {
 
-	private ConnectionMaker connectionMaker;
+//	private ConnectionMaker connectionMaker;
+	private DataSource dataSource;
 	
-	public void setConnectionMaker(ConnectionMaker connectionMaker) {
-		this.connectionMaker = connectionMaker;
+//	public void setConnectionMaker(ConnectionMaker connectionMaker) {
+//		this.connectionMaker = connectionMaker;
+//	}
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 	public void add(Actor actor) throws ClassNotFoundException, SQLException {
 		
-		Connection conn = this.connectionMaker.makeConnection();
+		Connection conn = this.dataSource.getConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("insert into actor(first_name, last_name, last_update) values(?, ?, localtimestamp)");
 		ps.setString(1, actor.getFirstName());
@@ -28,7 +34,7 @@ public class ActorDao {
 	public int getLastIdx() throws ClassNotFoundException, SQLException {
 		int idx = -1;
 		
-		Connection conn = this.connectionMaker.makeConnection();
+		Connection conn = this.dataSource.getConnection();
 		
 //		PreparedStatement ps = conn.prepareStatement("select last_value from actor_actor_id_seq");
 		PreparedStatement ps = conn.prepareStatement("select max(actor_id) as last_value from actor");
@@ -49,7 +55,7 @@ public class ActorDao {
 		
 		Actor actor = null;
 		
-		Connection conn = this.connectionMaker.makeConnection();
+		Connection conn = this.dataSource.getConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("select * from actor where actor_id = ?");
 		ps.setInt(1, id);

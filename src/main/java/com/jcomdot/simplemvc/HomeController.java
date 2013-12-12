@@ -38,6 +38,7 @@ public class HomeController {
 		ApplicationContext context = new GenericXmlApplicationContext("spring/context/applicationContext.xml");
 		ActorDao dao = context.getBean("actorDao", ActorDao.class);
 //		CountingConnectionMaker ccm = context.getBean("connectionMaker", CountingConnectionMaker.class);
+//		context.close();
 		((GenericXmlApplicationContext) context).close();
 		
 		// DL(Dependency Lookup)
