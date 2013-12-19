@@ -75,5 +75,45 @@ public class ActorDao {
 		
 		return actor;
 	}
+	
+	public void deleteAddedRecords() throws SQLException {
+
+		Connection conn = this.dataSource.getConnection();
+		PreparedStatement ps = conn.prepareStatement("delete from actor where actor_id > 200");
+		ps.executeUpdate();
+		resetCount();
+		
+		ps.close();
+		conn.close();
+	}
+	
+	public void resetCount() throws SQLException {
+
+		Connection conn = this.dataSource.getConnection();
+		PreparedStatement ps = conn.prepareStatement("SELECT setval('public.actor_actor_id_seq', 200, true)");
+		ps.executeQuery();
+		
+		ps.close();
+		conn.close();
+	}
+	
+	public int getCount() throws SQLException {
+		
+		int ret = -1;
+		
+		Connection conn = this.dataSource.getConnection();
+		PreparedStatement ps = conn.prepareStatement("select count(*) from actor");
+		
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			ret = rs.getInt(1);
+		}
+		
+		rs.close();
+		ps.close();
+		conn.close();
+		
+		return ret;
+	}
 
 }

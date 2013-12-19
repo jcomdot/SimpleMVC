@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -59,11 +61,20 @@ public class HomeControllerTest {
 		try {
 			int lastIdx = dao.getLastIdx();
 			actor2 = dao.get(lastIdx);
-			System.out.println(actor2.firstName + actor2.lastName);
+			System.out.println(actor2.firstName + " " + actor2.lastName);
 //			logger.debug("조회 성공!!!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			dao.deleteAddedRecords();
+			assertThat(dao.getCount(), is(200));
+//			logger.debug("조회 성공!!!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 //		fail("Not yet implemented");
 	}
 
