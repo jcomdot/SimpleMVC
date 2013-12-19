@@ -1,7 +1,10 @@
 package com.jcomdot.simplemvc;
 
 import java.sql.*;
+
 import javax.sql.DataSource;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 
 public class ActorDao {
 
@@ -51,7 +54,7 @@ public class ActorDao {
 		return idx;
 	}
 	
-	public Actor get(int id) throws ClassNotFoundException, SQLException {
+	public Actor get(int id) throws SQLException {
 		
 		Actor actor = null;
 		
@@ -72,6 +75,8 @@ public class ActorDao {
 		rs.close();
 		ps.close();
 		conn.close();
+		
+		if (actor == null) throw new EmptyResultDataAccessException(1);
 		
 		return actor;
 	}

@@ -10,6 +10,16 @@ public class Actor {
 	Date lastUpdate;
 	
 	
+	
+	public Actor() {
+	}
+
+	public Actor(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
+
 	public int getActorId() {
 		return actorId;
 	}
