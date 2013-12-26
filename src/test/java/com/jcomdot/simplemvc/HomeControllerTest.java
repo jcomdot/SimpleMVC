@@ -12,18 +12,39 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="classpath:/spring/context/applicationContext.xml")
 public class HomeControllerTest {
 
+	@Autowired
+	private ApplicationContext context;
+
+	private ActorDao dao;
+	private Actor actor1;
+	private Actor actor2;
+	private Actor actor3;
+	
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
 
 	@Before
 	public void setUp() throws Exception {
+
+		this.dao = context.getBean("actorDao", ActorDao.class);
+		
+		this.actor1 = new Actor("호동", "강");
+		this.actor2 = new Actor("재석", "유");
+		this.actor3 = new Actor("경규", "이");
+
 	}
 
 	@After
@@ -33,51 +54,44 @@ public class HomeControllerTest {
 	@Test(expected=EmptyResultDataAccessException.class)
 	public void getActorFailure() throws SQLException {
 
-		ApplicationContext context = new GenericXmlApplicationContext("spring/context/applicationContext.xml");
-		ActorDao dao = context.getBean("actorDao", ActorDao.class);
-		((GenericXmlApplicationContext) context).close();
+		this.dao.deleteAddedRecords();
+		assertThat(this.dao.getCount(), is(200));
 		
-		dao.deleteAddedRecords();
-		assertThat(dao.getCount(), is(200));
-		
-		dao.get(201);
+		this.dao.get(201);
 
 	}
 	
 	@Test
 	public void count() {
 
-		ApplicationContext context = new GenericXmlApplicationContext("spring/context/applicationContext.xml");
-		ActorDao dao = context.getBean("actorDao", ActorDao.class);
-		((GenericXmlApplicationContext) context).close();
-
-		Actor actor1 = new Actor("호동", "강");
-		Actor actor2 = new Actor("재석", "유");
-		Actor actor3 = new Actor("경규", "이");
-
 		try {
-			dao.deleteAddedRecords();
-			assertThat(dao.getCount(), is(200));
+			this.dao.deleteAddedRecords();
+			assertThat(this.dao.getCount(), is(200));
 			
-			dao.add(actor1);
-			actor1.setActorId(dao.getLastIdx());
-			dao.add(actor2);
-			actor2.setActorId(dao.getLastIdx());
-			assertThat(dao.getCount(), is(202));
+			this.dao.add(this.actor1);
+			this.actor1.setActorId(this.dao.getLastIdx());
+			this.dao.add(actor2);
+			this.actor2.setActorId(this.dao.getLastIdx());
+			this.dao.add(actor3);
+			this.actor3.setActorId(this.dao.getLastIdx());
+			assertThat(this.dao.getCount(), is(203));
 			
-			Actor actorGet1 = dao.get(actor1.getActorId());
-			assertThat(actorGet1.getFirstName() , is(actor1.getFirstName()));
-			assertThat(actorGet1.getLastName() , is(actor1.getLastName()));
-			Actor actorGet2 = dao.get(actor2.getActorId());
-			assertThat(actorGet2.getFirstName() , is(actor2.getFirstName()));
-			assertThat(actorGet2.getLastName() , is(actor2.getLastName()));
+			Actor actorGet1 = this.dao.get(this.actor1.getActorId());
+			assertThat(actorGet1.getFirstName() , is(this.actor1.getFirstName()));
+			assertThat(actorGet1.getLastName() , is(this.actor1.getLastName()));
+			Actor actorGet2 = this.dao.get(this.actor2.getActorId());
+			assertThat(actorGet2.getFirstName() , is(this.actor2.getFirstName()));
+			assertThat(actorGet2.getLastName() , is(this.actor2.getLastName()));
+			Actor actorGet3 = this.dao.get(this.actor3.getActorId());
+			assertThat(actorGet3.getFirstName() , is(this.actor3.getFirstName()));
+			assertThat(actorGet3.getLastName() , is(this.actor3.getLastName()));
 			
-			dao.deleteAddedRecords();
-			assertThat(dao.getCount(), is(200));
-			dao.add(actor3);
-			assertThat(dao.getCount(), is(201));
-			dao.deleteAddedRecords();
-			assertThat(dao.getCount(), is(200));
+			this.dao.deleteAddedRecords();
+			assertThat(this.dao.getCount(), is(200));
+			this.dao.add(actor3);
+			assertThat(this.dao.getCount(), is(201));
+			this.dao.deleteAddedRecords();
+			assertThat(this.dao.getCount(), is(200));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -86,30 +100,20 @@ public class HomeControllerTest {
 	
 	@Test
 	public void testHome() {
+
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, new Locale("ko", "KR"));
 		
 		String formattedDate = dateFormat.format(date);
 		System.out.println(formattedDate);
 
-		// DI(Dependency Injection)
-//		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-		ApplicationContext context = new GenericXmlApplicationContext("spring/context/applicationContext.xml");
-		ActorDao dao = context.getBean("actorDao", ActorDao.class);
-//		CountingConnectionMaker ccm = context.getBean("connectionMaker", CountingConnectionMaker.class);
-//		context.close();
-		((GenericXmlApplicationContext) context).close();
-		
-		// DL(Dependency Lookup)
-//		ActorDao dao = new ActorDao();
-		
 		Actor actor = new Actor();
 		actor.setFirstName("Tobbung");
 		actor.setLastName("Jang");
 
 		try {
-			dao.add(actor);
-			assertThat(dao.getCount(), is(201));
+			this.dao.add(actor);
+			assertThat(this.dao.getCount(), is(201));
 //			logger.debug("등록 성공!!!");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,8 +121,8 @@ public class HomeControllerTest {
 
 		Actor actor2;
 		try {
-			int lastIdx = dao.getLastIdx();
-			actor2 = dao.get(lastIdx);
+			int lastIdx = this.dao.getLastIdx();
+			actor2 = this.dao.get(lastIdx);
 			System.out.println(actor2.firstName + " " + actor2.lastName);
 //			logger.debug("조회 성공!!!");
 		} catch (Exception e) {
@@ -126,8 +130,8 @@ public class HomeControllerTest {
 		}
 		
 		try {
-			dao.deleteAddedRecords();
-			assertThat(dao.getCount(), is(200));
+			this.dao.deleteAddedRecords();
+			assertThat(this.dao.getCount(), is(200));
 //			logger.debug("조회 성공!!!");
 		} catch (Exception e) {
 			e.printStackTrace();
