@@ -40,7 +40,7 @@ public class HomeControllerTest {
 	public void setUp() throws Exception {
 
 		this.dao = context.getBean("actorDao", ActorDao.class);
-		
+
 		this.actor1 = new Actor("호동", "강");
 		this.actor2 = new Actor("재석", "유");
 		this.actor3 = new Actor("경규", "이");
