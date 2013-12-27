@@ -14,7 +14,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,8 +23,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class HomeControllerTest {
 
 	@Autowired
-	private ApplicationContext context;
-
 	private ActorDao dao;
 	private Actor actor1;
 	private Actor actor2;
@@ -38,8 +35,6 @@ public class HomeControllerTest {
 
 	@Before
 	public void setUp() throws Exception {
-
-		this.dao = context.getBean("actorDao", ActorDao.class);
 
 		this.actor1 = new Actor("호동", "강");
 		this.actor2 = new Actor("재석", "유");

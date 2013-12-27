@@ -8,6 +8,7 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/spring/context/applicationContext.xml</config>
+		<config>src/test/resources/spring/context/junit.xml</config>
 	</configs>
 	<configSets>
 	</configSets>
