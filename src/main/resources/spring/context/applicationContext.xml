@@ -3,16 +3,19 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<bean id="actorDao" class="com.jcomdot.simplemvc.ActorDao">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="jdbcContext" ref="jdbcContext"></property>
+	</bean>
+
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 		<property name="driverClass" value="org.postgresql.Driver"></property>
 		<property name="url" value="jdbc:postgresql://localhost/pagila"></property>
 		<property name="username" value="postgres"></property>
 		<property name="password" value="fkfkvhxm"></property>
 	</bean>
-	<bean id="actorDao" class="com.jcomdot.simplemvc.ActorDao">
+	<bean id="jdbcContext" class="com.jcomdot.simplemvc.JdbcContext">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-	
-
 	
 </beans>
