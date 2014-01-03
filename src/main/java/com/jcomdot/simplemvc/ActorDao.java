@@ -23,7 +23,7 @@ public class ActorDao {
 	public void setJdbcContext(JdbcContext jdbcContext) {
 		this.jdbcContext = jdbcContext;
 	}
-
+	
 	public void add(final Actor actor) throws ClassNotFoundException, SQLException {
 		
 		this.jdbcContext.workWithStatementStrategy(
@@ -87,16 +87,8 @@ public class ActorDao {
 	}
 	
 	public void deleteAddedRecords() throws SQLException {
-
-		this.jdbcContext.workWithStatementStrategy(
-			new StatementStrategy() {
-				public PreparedStatement makePreparedStatement(Connection conn) throws SQLException {
-					return conn.prepareStatement("delete from actor where actor_id > 200");
-				}
-			}
-		);
-		
-	}
+		this.jdbcContext.executeSql("delete from actor where actor_id > 200");
+}
 	
 	public void resetCount() throws SQLException {
 
