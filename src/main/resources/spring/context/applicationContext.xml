@@ -5,7 +5,6 @@
 
 	<bean id="actorDao" class="com.jcomdot.simplemvc.ActorDao">
 		<property name="dataSource" ref="dataSource"></property>
-		<property name="jdbcContext" ref="jdbcContext"></property>
 	</bean>
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
@@ -13,9 +12,6 @@
 		<property name="url" value="jdbc:postgresql://localhost/pagila"></property>
 		<property name="username" value="postgres"></property>
 		<property name="password" value="fkfkvhxm"></property>
-	</bean>
-	<bean id="jdbcContext" class="com.jcomdot.simplemvc.JdbcContext">
-		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
 </beans>

@@ -3,6 +3,7 @@ package com.jcomdot.simplemvc;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -54,6 +55,35 @@ public class HomeControllerTest {
 		
 		this.dao.get(201);
 
+	}
+	
+	@Test
+	public void getAll() throws Exception {
+		this.dao.deleteAddedRecords();
+		
+		this.dao.add(this.actor1);
+		List<Actor> actors1 = this.dao.getAll();
+		assertThat(actors1.size(), is(201));
+		this.checkSameActor(this.actor1, actors1.get(0));
+		
+		this.dao.add(this.actor2);
+		List<Actor> actors2 = this.dao.getAll();
+		assertThat(actors2.size(), is(202));
+		this.checkSameActor(this.actor1, actors2.get(1));
+		this.checkSameActor(this.actor2, actors2.get(0));
+		
+		this.dao.add(this.actor3);
+		List<Actor> actors3 = this.dao.getAll();
+		assertThat(actors3.size(), is(203));
+		this.checkSameActor(this.actor1, actors3.get(2));
+		this.checkSameActor(this.actor2, actors3.get(1));
+		this.checkSameActor(this.actor3, actors3.get(0));
+		
+	}
+	
+	private void checkSameActor(Actor actor1, Actor actor2) {
+		assertThat(actor1.getFirstName(), is(actor2.getFirstName()));
+		assertThat(actor1.getLastName(), is(actor2.getLastName()));
 	}
 	
 	@Test

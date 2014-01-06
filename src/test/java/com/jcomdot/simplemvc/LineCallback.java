@@ -2,6 +2,6 @@ package com.jcomdot.simplemvc;
 
 import java.io.IOException;
 
-public interface LineCallback {
-	Integer doSomethingWithLine(String line, Integer value) throws IOException;
+public interface LineCallback<T> {
+	T doSomethingWithLine(String line, T value) throws IOException;
 }
