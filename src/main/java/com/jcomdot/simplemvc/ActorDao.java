@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -28,9 +29,16 @@ public class ActorDao {
 			}
 		};
 	
-	public void add(final Actor actor) {
-		this.jdbcTemplate.update("insert into actor(first_name, last_name, last_update) values(?, ?, localtimestamp)",
-			actor.getFirstName(), actor.getLastName());
+	public void add(final Actor actor) throws DuplicateActorIdException {
+		try {
+			this.jdbcTemplate.update("insert into actor(first_name, last_name, last_update) values(?, ?, localtimestamp)",
+				actor.getFirstName(), actor.getLastName());
+		} catch (DataAccessException e) {
+			if (((SQLException)e.getCause()).getErrorCode() == 1062)
+				throw new DuplicateActorIdException(e);
+			else
+				throw new RuntimeException(e);
+		}
 	}
 	
 	public int getLastIdx() {

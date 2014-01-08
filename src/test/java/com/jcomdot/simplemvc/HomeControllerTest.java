@@ -58,7 +58,7 @@ public class HomeControllerTest {
 	}
 	
 	@Test
-	public void getAll() throws Exception {
+	public void getAll() {
 		this.dao.deleteAddedRecords();
 		
 		this.dao.add(this.actor1);
