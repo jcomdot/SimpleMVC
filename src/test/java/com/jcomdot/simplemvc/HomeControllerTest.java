@@ -79,6 +79,7 @@ public class HomeControllerTest {
 		this.checkSameActor(this.actor2, actors3.get(1));
 		this.checkSameActor(this.actor3, actors3.get(0));
 		
+		this.dao.deleteAddedRecords();
 	}
 	
 	private void checkSameActor(Actor actor1, Actor actor2) {

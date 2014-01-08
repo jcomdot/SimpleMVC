@@ -10,12 +10,10 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class ActorDao {
 
-	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 	
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
-		this.dataSource = dataSource;
 	}
 	
 	public void add(final Actor actor) throws ClassNotFoundException, SQLException {
@@ -24,22 +22,7 @@ public class ActorDao {
 	}
 	
 	public int getLastIdx() throws ClassNotFoundException, SQLException {
-		int idx = -1;
-		
-		Connection conn = this.dataSource.getConnection();
-		
-		PreparedStatement ps = conn.prepareStatement("select max(actor_id) as last_value from actor");
-		
-		ResultSet rs = ps.executeQuery();
-		if (rs.next()) {
-			idx = rs.getInt("last_value");
-		}
-		
-		rs.close();
-		ps.close();
-		conn.close();
-		
-		return idx;
+		return this.jdbcTemplate.queryForObject("select max(actor_id) as last_value from actor", Integer.class);
 	}
 	
 	public Actor get(int id) throws SQLException {
@@ -76,16 +59,11 @@ public class ActorDao {
 	
 	public void deleteAddedRecords() throws SQLException {
 		this.jdbcTemplate.update("delete from actor where actor_id > 200");
+		this.resetCount();
 	}
 	
 	public void resetCount() throws SQLException {
-
-		Connection conn = this.dataSource.getConnection();
-		PreparedStatement ps = conn.prepareStatement("SELECT setval('public.actor_actor_id_seq', 200, true)");
-		ps.executeQuery();
-		
-		ps.close();
-		conn.close();
+		this.jdbcTemplate.execute("select setval('public.actor_actor_id_seq', 200, true)");
 	}
 	
 	public int getCount() throws SQLException {
