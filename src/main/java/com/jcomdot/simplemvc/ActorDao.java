@@ -1,11 +1,12 @@
 package com.jcomdot.simplemvc;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -33,11 +34,8 @@ public class ActorDao {
 		try {
 			this.jdbcTemplate.update("insert into actor(first_name, last_name, last_update) values(?, ?, localtimestamp)",
 				actor.getFirstName(), actor.getLastName());
-		} catch (DataAccessException e) {
-			if (((SQLException)e.getCause()).getErrorCode() == 1062)
-				throw new DuplicateActorIdException(e);
-			else
-				throw new RuntimeException(e);
+		} catch (DuplicateKeyException e) {
+			throw new DuplicateActorIdException(e);
 		}
 	}
 	

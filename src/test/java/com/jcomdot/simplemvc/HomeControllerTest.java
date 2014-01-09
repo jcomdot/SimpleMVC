@@ -1,13 +1,13 @@
 package com.jcomdot.simplemvc;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
