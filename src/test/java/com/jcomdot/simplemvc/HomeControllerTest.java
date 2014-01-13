@@ -1,6 +1,6 @@
 package com.jcomdot.simplemvc;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.sql.SQLException;
@@ -9,13 +9,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.sql.DataSource;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -23,8 +29,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations="classpath*:**/applicationContext.xml")
 public class HomeControllerTest {
 
-	@Autowired
-	private ActorDao dao;
+	@Autowired private ActorDao dao;
+	@Autowired private DataSource dataSource;
 	private Actor actor1;
 	private Actor actor2;
 	private Actor actor3;
@@ -122,6 +128,33 @@ public class HomeControllerTest {
 			e.printStackTrace();
 		}
 
+	}
+	
+	@Test(expected=DataAccessException.class)
+	public void duplicateKey() {
+		Actor actor = new Actor("Watson", "John");
+		actor.setActorId(200);
+		this.dao.addWithId(actor);
+	}
+	
+	@Test(expected=DuplicateKeyException.class)
+	public void duplicateKeyWithoutExceptionExpected() {
+		Actor actor = new Actor("Sherlock", "Holmes");
+		actor.setActorId(200);
+		this.dao.addWithId(actor);
+	}
+	
+	@Test
+	public void sqlExeptionTranslate() {
+		Actor actor = new Actor("Conan", "Doyle");
+		actor.setActorId(200);
+		try {
+			this.dao.addWithId(actor);
+		} catch (DuplicateKeyException e) {
+			SQLException sqlEx = (SQLException)e.getRootCause();
+			SQLExceptionTranslator set = new SQLErrorCodeSQLExceptionTranslator(this.dataSource);
+			assertThat(set.translate(null, null, sqlEx), is(instanceOf(DuplicateKeyException.class)));
+		}
 	}
 	
 	@Test
