@@ -77,6 +77,24 @@ public class HomeControllerTest2 {
 	}
 	
 	@Test
+	public void update() {
+		
+		this.dao.deleteAll();
+		
+		this.dao.add(this.user1);
+		
+		this.user1.setName("Mary Morstan");
+		this.user1.setPassword("james");
+		this.user1.setLevel(Level.GOLD);
+		this.user1.setLogin(1000);
+		this.user1.setRecommend(999);
+		this.dao.update(this.user1);
+		
+		User user1update = this.dao.get(this.user1.getId());
+		this.checkSameUser(user1update, this.user1);
+	}
+	
+	@Test
 	public void getAll() {
 		this.dao.deleteAll();
 		
