@@ -1,5 +1,7 @@
 package com.jcomdot.simplemvc;
 
+import java.util.Date;
+
 public class User {
 
 	String id;
@@ -8,6 +10,7 @@ public class User {
 	Level level;
 	int login;
 	int recommend;
+	Date lastUpgraded;
 	
 	
 	public User() {
@@ -20,6 +23,17 @@ public class User {
 		this.level = level;
 		this.login = login;
 		this.recommend = recommend;
+	}
+	
+	public void upgradeLevel() {
+		Level nextLevel = this.level.nextLevel();
+		if (nextLevel == null) {
+			throw new IllegalStateException(this.level + "은 업그레이드가 불가능합니다.");
+		}
+		else {
+			this.level = nextLevel;
+			this.lastUpgraded = new Date();
+		}
 	}
 
 
