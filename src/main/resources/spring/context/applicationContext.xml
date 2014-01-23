@@ -9,6 +9,7 @@
 
 	<bean id="userService" class="com.jcomdot.simplemvc.UserService">
 		<property name="userDao" ref="userDao"></property>
+		<property name="dataSource" ref="dataSource"></property>
 		<property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"></property>
 	</bean>
 	

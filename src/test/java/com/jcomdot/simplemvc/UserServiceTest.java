@@ -8,6 +8,8 @@ import static com.jcomdot.simplemvc.UserLevelUpgradePolicy.MIN_RECOMMEND_FOR_GOL
 import java.util.Arrays;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -23,6 +25,7 @@ public class UserServiceTest {
 
 	@Autowired UserService userService;
 	@Autowired UserDao userDao;
+	@Autowired private DataSource dataSource;
 	List<User> users;
 	
 	@BeforeClass
@@ -50,7 +53,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void upgradeLevels() {
+	public void upgradeLevels() throws Exception {
 		this.userDao.deleteAll();
 		for (User user : this.users)
 			this.userDao.add(user);
@@ -90,6 +93,46 @@ public class UserServiceTest {
 		
 		assertThat(userWithLevelRead.getLevel(), is(userWithLevel.getLevel()));
 		assertThat(userWithoutLevelRead.getLevel(), is(userWithoutLevel.getLevel()));
+	}
+
+	
+	static class TestUserServiceException extends RuntimeException {
+		private static final long serialVersionUID = 122233494726214926L;
+	}
+
+	static class TestUserService extends UserService {
+		
+		private String id;
+		
+		private TestUserService(String id) {
+			this.id = id;
+		}
+
+		@Override
+		protected void upgradeLevel(User user) {
+			if (user.getId().equals(this.id)) throw new TestUserServiceException();
+			super.upgradeLevel(user);
+		}
+		
+	}
+
+	@Test
+	public void upgradeAllOrNothing() {
+		UserService testUserService = new TestUserService(users.get(3).getId());
+		testUserService.setUserDao(this.userDao);
+		testUserService.setDataSource(this.dataSource);
+		testUserService.setUserLevelUpgradePolicy(userService.getUserLevelUpgradePolicy());
+		userDao.deleteAll();
+		for (User user : users) userDao.add(user);
+		
+		try {
+			testUserService.upgradeLevels();
+			fail("TestUserServiceException expected.");
+		}
+		catch(Exception e) {
+		}
+		
+		checkLevelUpgraded(users.get(1), false);
 	}
 	
 }
