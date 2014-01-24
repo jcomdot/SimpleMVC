@@ -8,8 +8,6 @@ import static com.jcomdot.simplemvc.UserLevelUpgradePolicy.MIN_RECOMMEND_FOR_GOL
 import java.util.Arrays;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -18,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath*:**/applicationContext.xml")
@@ -25,7 +24,7 @@ public class UserServiceTest {
 
 	@Autowired UserService userService;
 	@Autowired UserDao userDao;
-	@Autowired private DataSource dataSource;
+	@Autowired PlatformTransactionManager transactionManager;
 	List<User> users;
 	
 	@BeforeClass
@@ -117,11 +116,11 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void upgradeAllOrNothing() {
+	public void upgradeAllOrNothing() { 
 		UserService testUserService = new TestUserService(users.get(3).getId());
 		testUserService.setUserDao(this.userDao);
-		testUserService.setDataSource(this.dataSource);
 		testUserService.setUserLevelUpgradePolicy(userService.getUserLevelUpgradePolicy());
+		testUserService.setTransactionManager(transactionManager);
 		userDao.deleteAll();
 		for (User user : users) userDao.add(user);
 		
