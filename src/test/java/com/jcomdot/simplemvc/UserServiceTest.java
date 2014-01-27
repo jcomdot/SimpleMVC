@@ -34,11 +34,11 @@ public class UserServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		users = Arrays.asList(
-			new User("jhkim", "김준호", "p1", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0),
-			new User("dyshin", "신동엽", "p2", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0),
-			new User("jsyoo", "유재석", "p3", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD-1),
-			new User("hdkang", "강호동", "p4", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD),
-			new User("kglee", "이경규", "p5", Level.GOLD, 100, Integer.MAX_VALUE)
+			new User("jhkim", "김준호", "p1", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0, "jsjang@outlook.com"),
+			new User("dyshin", "신동엽", "p2", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0, "jcomdot@icloud.com"),
+			new User("jsyoo", "유재석", "p3", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD-1, "jsjang@outlook.com"),
+			new User("hdkang", "강호동", "p4", Level.SILVER, 60, MIN_RECOMMEND_FOR_GOLD, "jsjang@outlook.com"),
+			new User("kglee", "이경규", "p5", Level.GOLD, 100, Integer.MAX_VALUE, "jsjang@outlook.com")
 		);
 	}
 

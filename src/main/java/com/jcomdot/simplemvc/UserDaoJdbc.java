@@ -27,21 +27,22 @@ public class UserDaoJdbc implements UserDao {
 				user.setLevel(Level.valueOf(rs.getShort("level")));
 				user.setLogin(rs.getInt("login"));
 				user.setRecommend(rs.getInt("recommend"));
+				user.setEmail(rs.getString("email"));
 				return user;
 			}
 		};
 
 	@Override
 	public void add(User user) {
-		this.jdbcTemplate.update("insert into users(id, name, password, level, login, recommend) values(?, ?, ?, ?, ?, ?)",
-				user.id, user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend());
+		this.jdbcTemplate.update("insert into users(id, name, password, level, login, recommend, email) values(?, ?, ?, ?, ?, ?, ?)",
+				user.id, user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getEmail());
 	}
 
 	@Override
 	public void update(User user) {
-		this.jdbcTemplate.update("update users set name = ?, password = ?, level = ?, login = ?, recommend = ? " + 
-			"where id = ?", user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(),
-			user.getId());
+		this.jdbcTemplate.update("update users set name = ?, password = ?, level = ?, login = ?, recommend = ?, email = ? " + 
+			"where id = ?", user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(),
+			user.getRecommend(), user.getEmail(), user.getId());
 	}
 
 	@Override

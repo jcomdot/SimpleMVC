@@ -43,9 +43,9 @@ public class HomeControllerTest2 {
 	@Before
 	public void setUp() throws Exception {
 
-		this.user1 = new User("jhwatson", "John", "Watson", Level.BASIC, 1, 0);
-		this.user2 = new User("shholmes", "Sherlock", "Holmes", Level.SILVER, 55, 10);
-		this.user3 = new User("acdoyle", "Conan", "Doyle", Level.GOLD, 100, 40);
+		this.user1 = new User("jhwatson", "John", "Watson", Level.BASIC, 1, 0, "jhwatson@jcomdot.com");
+		this.user2 = new User("shholmes", "Sherlock", "Holmes", Level.SILVER, 55, 10, "shholmes@jcomdot.com");
+		this.user3 = new User("acdoyle", "Conan", "Doyle", Level.GOLD, 100, 40, "acdoyle@jcomdot.com");
 
 	}
 
@@ -162,19 +162,19 @@ public class HomeControllerTest2 {
 	
 	@Test(expected=DataAccessException.class)
 	public void duplicateKey() {
-		User user = new User("jhwatson", "Watson", "John", Level.BASIC, 1, 0);
+		User user = new User("jhwatson", "Watson", "John", Level.BASIC, 1, 0, "jhwatson@jcomdot.com");
 		this.dao.add(user);
 	}
 	
 	@Test(expected=DuplicateKeyException.class)
 	public void duplicateKeyWithoutExceptionExpected() {
-		User user = new User("shholmes", "Sherlock", "Holmes", Level.SILVER, 55, 10);
+		User user = new User("shholmes", "Sherlock", "Holmes", Level.SILVER, 55, 10, "shholmes@jcomdot.com");
 		this.dao.add(user);
 	}
 	
 	@Test
 	public void sqlExeptionTranslate() {
-		User user = new User("acdoyle", "Conan", "Doyle", Level.GOLD, 100, 40);
+		User user = new User("acdoyle", "Conan", "Doyle", Level.GOLD, 100, 40, "acdoyle@jcomdot.com");
 		try {
 			this.dao.add(user);
 		} catch (DuplicateKeyException e) {
@@ -193,7 +193,7 @@ public class HomeControllerTest2 {
 		String formattedDate = dateFormat.format(date);
 		System.out.println(formattedDate);
 
-		User user = new User("jsjang", "Joonsong Jang", "test", Level.GOLD, 120, 50);
+		User user = new User("jsjang", "Joonsong Jang", "test", Level.GOLD, 120, 50, "jsjang@jcomdot.com");
 
 		try {
 			this.dao.add(user);
