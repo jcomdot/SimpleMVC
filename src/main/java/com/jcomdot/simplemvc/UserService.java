@@ -66,8 +66,8 @@ public class UserService {
 		try {
 			message.setFrom(new InternetAddress("always@jcomdot.com"));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
-			message.setSubject("Upgrade 안내");
-			message.setText(user.getName() + "님의 등급이 " + user.getLevel().name() + "로 업그레이드되었습니다.");
+			message.setSubject("Upgrade 안내", "UTF-8");
+			message.setText(user.getName() + "님의 등급이 " + user.getLevel().name() + "로 업그레이드되었습니다.", "UTF-8");
 			
 			Transport.send(message);
 		} catch (AddressException e) {
