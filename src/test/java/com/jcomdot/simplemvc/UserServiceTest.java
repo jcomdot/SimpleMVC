@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -25,6 +26,7 @@ public class UserServiceTest {
 	@Autowired UserService userService;
 	@Autowired UserDao userDao;
 	@Autowired PlatformTransactionManager transactionManager;
+	@Autowired MailSender mailSender;
 	List<User> users;
 	
 	@BeforeClass
@@ -121,6 +123,8 @@ public class UserServiceTest {
 		testUserService.setUserDao(this.userDao);
 		testUserService.setUserLevelUpgradePolicy(userService.getUserLevelUpgradePolicy());
 		testUserService.setTransactionManager(transactionManager);
+		testUserService.setMailSender(mailSender);
+		
 		userDao.deleteAll();
 		for (User user : users) userDao.add(user);
 		
