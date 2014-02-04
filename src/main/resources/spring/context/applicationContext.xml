@@ -7,10 +7,9 @@
 <!-- 		<property name="dataSource" ref="dataSource"></property> -->
 <!-- 	</bean> -->
 
-	<bean id="userService" class="com.jcomdot.simplemvc.UserService">
+	<bean id="userService" class="com.jcomdot.simplemvc.UserServiceImpl">
 		<property name="userDao" ref="userDao"></property>
 		<property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"></property>
-		<property name="transactionManager" ref="transactionManager"></property>
 		<property name="mailSender" ref="mailSender"></property>
 	</bean>
 
@@ -23,9 +22,8 @@
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-	<bean id="mailSender"
-		class="com.jcomdot.simplemvc.DummyMailSender">
-<!-- 		<property name="host" value="mail.jcomdot.com"></property> -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="mail.jcomdot.com"></property>
 	</bean>
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
