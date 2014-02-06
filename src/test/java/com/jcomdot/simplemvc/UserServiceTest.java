@@ -28,6 +28,39 @@ import org.springframework.transaction.PlatformTransactionManager;
 //@ContextConfiguration(locations="classpath*:**/applicationContext.xml")
 public class UserServiceTest {
 
+	static class MockUserDao implements UserDao {
+
+		private List<User> users;
+		private List<User> updated = new ArrayList<User>();
+		
+		private MockUserDao(List<User> users) {
+			this.users = users;
+		}
+
+		public List<User> getUpdated() {
+			return this.updated;
+		}
+		
+		@Override
+		public List<User> getAll() {
+			return this.users;
+		}
+
+		@Override
+		public void update(User user) {
+			updated.add(user);
+		}
+
+		@Override
+		public void add(User user) { throw new UnsupportedOperationException(); }
+		@Override
+		public User get(String id) { throw new UnsupportedOperationException(); }
+		@Override
+		public void deleteAll() { throw new UnsupportedOperationException(); }
+		@Override
+		public int getCount() { throw new UnsupportedOperationException(); }
+	}
+
 	static class MockMailSender implements MailSender {
 		
 		private List<String> requests = new ArrayList<String>();
@@ -81,15 +114,29 @@ public class UserServiceTest {
 	@Test
 	@DirtiesContext
 	public void upgradeLevels() throws Exception {
-		this.userDao.deleteAll();
-		for (User user : this.users) this.userDao.add(user);
+		
+		UserServiceImpl userServiceImpl = new UserServiceImpl();
+		
+		MockUserDao mockUserDao = new MockUserDao(this.users);
+		userServiceImpl.setUserDao(mockUserDao);
+		
+//		userDao.deleteAll();
+//		for (User user : this.users) this.userDao.add(user);
 		
 		MockMailSender mockMailSender = new MockMailSender();
+		userServiceImpl.setUserLevelUpgradePolicy(this.userServiceImpl.getUserLevelUpgradePolicy());
+		((UserLevelUpgradePolicyImpl)userServiceImpl.getUserLevelUpgradePolicy()).setUserDao(mockUserDao);
 		userServiceImpl.setMailSender(mockMailSender);
 		
-		this.userService.upgradeLevels();
+//		this.userService.upgradeLevels();
+		userServiceImpl.upgradeLevels();
 		
-		checkLevelUpgraded(users.get(0), false);
+		List<User> updated = mockUserDao.getUpdated();
+		assertThat(updated.size(), is(2));
+		checkUserAndLevel(updated.get(0), "dyshin", Level.SILVER);
+		checkUserAndLevel(updated.get(1), "hdkang", Level.GOLD);
+		
+/*		checkLevelUpgraded(users.get(0), false);
 		checkLevelUpgraded(users.get(1), true);
 		checkLevelUpgraded(users.get(2), false);
 		checkLevelUpgraded(users.get(3), true);
@@ -99,6 +146,11 @@ public class UserServiceTest {
 		assertThat(request.size(), is(2));
 		assertThat(request.get(0), is(users.get(1).getEmail()));
 		assertThat(request.get(1), is(users.get(3).getEmail()));
+*/	}
+
+	private void checkUserAndLevel(User updated, String expectedId, Level expectedLevel) {
+		assertThat(updated.getId(), is(expectedId));
+		assertThat(updated.getLevel(), is(expectedLevel));
 	}
 
 	private void checkLevelUpgraded(User user, boolean upgraded) {
@@ -151,7 +203,7 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void upgradeAllOrNothing() { 
+	public void upgradeAllOrNothing() {
 		TestUserService testUserService = new TestUserService(users.get(3).getId());
 		testUserService.setUserDao(this.userDao);
 		testUserService.setUserLevelUpgradePolicy(userServiceImpl.getUserLevelUpgradePolicy());
