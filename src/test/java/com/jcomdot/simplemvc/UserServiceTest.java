@@ -161,9 +161,9 @@ public class UserServiceTest {
 		
 		ArgumentCaptor<SimpleMailMessage> mailMessageArg = ArgumentCaptor.forClass(SimpleMailMessage.class);
 		verify(mockMailSender, times(2)).send(mailMessageArg.capture());
-		List<SimpleMailMessage> mailMessage = mailMessageArg.getAllValues();
-		assertThat(mailMessage.get(0).getTo()[0], is(users.get(1).getEmail()));
-		assertThat(mailMessage.get(1).getTo()[0], is(users.get(3).getEmail()));
+		List<SimpleMailMessage> mailMessages = mailMessageArg.getAllValues();
+		assertThat(mailMessages.get(0).getTo()[0], is(users.get(1).getEmail()));
+		assertThat(mailMessages.get(1).getTo()[0], is(users.get(3).getEmail()));
 		
 	}
 
