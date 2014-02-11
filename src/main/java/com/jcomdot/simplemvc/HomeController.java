@@ -1,5 +1,7 @@
 package com.jcomdot.simplemvc;
 
+import static com.jcomdot.simplemvc.UserLevelUpgradePolicy.MIN_LOGCOUNT_FOR_SILVER;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -36,7 +38,7 @@ public class HomeController {
 		// DI(Dependency Injection)
 //		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 		ApplicationContext context = new GenericXmlApplicationContext("spring/context/applicationContext.xml");
-		ActorDao dao = context.getBean("actorDao", ActorDao.class);
+		UserDao dao = context.getBean("userDao", UserDao.class);
 //		CountingConnectionMaker ccm = context.getBean("connectionMaker", CountingConnectionMaker.class);
 //		context.close();
 		((GenericXmlApplicationContext) context).close();
@@ -44,28 +46,25 @@ public class HomeController {
 		// DL(Dependency Lookup)
 //		ActorDao dao = new ActorDao();
 		
-		Actor actor = new Actor();
-		actor.setFirstName("Tobbung");
-		actor.setLastName("Jang");
+		User user = new User("jsjang", "Joonsong Jang", "spring", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0, "jsjang@outlook.com");
 
 		try {
-			dao.add(actor);
+			dao.add(user);
 			logger.debug("등록 성공!!!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		Actor actor2 = null;
+		User user2 = null;
 		try {
-			int lastIdx = dao.getLastIdx();
-			actor2 = dao.get(lastIdx);
+			user2 = dao.get(user.getId());
 			logger.debug("조회 성공!!!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		model.addAttribute("serverTime", formattedDate);
-		model.addAttribute("actor", actor2);
+		model.addAttribute("user", user2);
 		
 		return "home";
 	}
