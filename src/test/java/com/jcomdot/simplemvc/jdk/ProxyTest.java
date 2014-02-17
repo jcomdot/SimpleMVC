@@ -3,6 +3,8 @@ package com.jcomdot.simplemvc.jdk;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Proxy;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -38,4 +40,14 @@ public class ProxyTest {
 		assertThat(proxyHello.sayThankYou("Tobbung"), is("THANK YOU TOBBUNG"));
 	}
 
+	@Test
+	public void helloUpperDynamicProxy() {
+		Hello proxiedHello = (Hello)Proxy.newProxyInstance(
+				getClass().getClassLoader(),
+				new Class[] { Hello.class },
+				new UppercaseHandler(new HelloTarget()));
+		assertThat(proxiedHello.sayHello("Tobbung"), is("HELLO TOBBUNG"));
+		assertThat(proxiedHello.sayHi("Tobbung"), is("HI TOBBUNG"));
+		assertThat(proxiedHello.sayThankYou("Tobbung"), is("THANK YOU TOBBUNG"));
+	}
 }
