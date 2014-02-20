@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import static com.jcomdot.simplemvc.UserLevelUpgradePolicy.MIN_LOGCOUNT_FOR_SILVER;
 import static com.jcomdot.simplemvc.UserLevelUpgradePolicy.MIN_RECOMMEND_FOR_GOLD;
 
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +28,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath*:**/junit.xml")
-//@ContextConfiguration(locations="classpath*:**/applicationContext.xml")
 public class UserServiceTest {
 
 	static class MockUserDao implements UserDao {
@@ -228,9 +228,16 @@ public class UserServiceTest {
 		testUserService.setUserLevelUpgradePolicy(userServiceImpl.getUserLevelUpgradePolicy());
 		testUserService.setMailSender(mailSender);
 		
-		UserServiceTx txUserService = new UserServiceTx();
+/*		UserServiceTx txUserService = new UserServiceTx();
 		txUserService.setTransactionManager(transactionManager);
 		txUserService.setUserService(testUserService);
+*/
+		TransactionHandler txHandler = new TransactionHandler();
+		txHandler.setTarget(testUserService);
+		txHandler.setTransactionManager(transactionManager);
+		txHandler.setPattern("upgradeLevels");
+		UserService txUserService = (UserService)Proxy.newProxyInstance(
+				getClass().getClassLoader(), new Class[] { UserService.class }, txHandler);
 		
 		userDao.deleteAll();
 		for (User user : users) userDao.add(user);

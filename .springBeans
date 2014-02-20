@@ -9,6 +9,7 @@
 	<configs>
 		<config>src/main/resources/spring/context/applicationContext.xml</config>
 		<config>src/test/resources/spring/context/junit.xml</config>
+		<config>src/test/resources/spring/context/FactoryBeanTest-context.xml</config>
 	</configs>
 	<configSets>
 	</configSets>
