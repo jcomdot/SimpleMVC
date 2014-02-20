@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="userService" class="com.jcomdot.simplemvc.UserServiceTx">
+	<bean id="userService" class="com.jcomdot.simplemvc.TxProxyFactoryBean">
+		<property name="target" ref="userServiceImpl" />
 		<property name="transactionManager" ref="transactionManager" />
-		<property name="userService" ref="userServiceImpl" />
+		<property name="pattern" value="upgradeLevels" />
+		<property name="serviceInterface" value="com.jcomdot.simplemvc.UserService" />
 	</bean>
 	<bean id="userServiceImpl" class="com.jcomdot.simplemvc.UserServiceImpl">
 		<property name="userDao" ref="userDao"></property>
