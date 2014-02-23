@@ -1,4 +1,4 @@
-package com.jcomdot.simplemvc.jdk;
+package com.jcomdot.simplemvc.jdk.proxy;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -9,6 +9,8 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
 import org.springframework.aop.framework.ProxyFactoryBean;
+
+import com.jcomdot.simplemvc.jdk.UppercaseHandler;
 
 public class DynamicProxyTest {
 
@@ -30,16 +32,16 @@ public class DynamicProxyTest {
 		pfBean.addAdvice(new UppercaseAdvice());
 		
 		Hello proxiedHello = (Hello)pfBean.getObject();
-		assertThat(proxiedHello.sayHello("Tobbung"), is("Hello Tobbung"));
-		assertThat(proxiedHello.sayHi("Tobbung"), is("Hi Tobbung"));
-		assertThat(proxiedHello.sayThankYou("Tobbung"), is("Thank You Tobbung"));
+		assertThat(proxiedHello.sayHello("Tobbung"), is("HELLO TOBBUNG"));
+		assertThat(proxiedHello.sayHi("Tobbung"), is("HI TOBBUNG"));
+		assertThat(proxiedHello.sayThankYou("Tobbung"), is("THANK YOU TOBBUNG"));
 	}
 
 	public class UppercaseAdvice implements MethodInterceptor {
 		@Override
 		public Object invoke(MethodInvocation invocation) throws Throwable {
 			String ret = (String)invocation.proceed();
-			return ret;
+			return ret.toUpperCase();
 		}
 	}
 	
