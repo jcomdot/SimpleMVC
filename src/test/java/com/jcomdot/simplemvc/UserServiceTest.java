@@ -218,7 +218,7 @@ public class UserServiceTest {
 		
 	}
 
-	@Test @DirtiesContext
+	@Test
 	public void upgradeAllOrNothing() throws Exception {
 		userDao.deleteAll();
 		for (User user : users) userDao.add(user);
