@@ -16,7 +16,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
-import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mail.MailException;
@@ -85,7 +84,7 @@ public class UserServiceTest {
 
 	@Autowired ApplicationContext context;
 	@Autowired UserService userService;
-	@Autowired UserServiceImpl userServiceImpl;
+	@Autowired UserService testUserService;
 	@Autowired UserDao userDao;
 	@Autowired PlatformTransactionManager transactionManager;
 	@Autowired MailSender mailSender;
@@ -112,7 +111,7 @@ public class UserServiceTest {
 
 	@Test
 	public void test() {
-		assertThat(this.userServiceImpl, is(notNullValue()));
+		assertThat(this.userService, is(notNullValue()));
 	}
 	
 	@Test
@@ -125,7 +124,7 @@ public class UserServiceTest {
 		userServiceImpl.setUserDao(mockUserDao);
 		
 		MockMailSender mockMailSender = new MockMailSender();
-		userServiceImpl.setUserLevelUpgradePolicy(this.userServiceImpl.getUserLevelUpgradePolicy());
+		userServiceImpl.setUserLevelUpgradePolicy(((UserServiceImpl)this.userService).getUserLevelUpgradePolicy());
 		((UserLevelUpgradePolicyImpl)userServiceImpl.getUserLevelUpgradePolicy()).setUserDao(mockUserDao);
 		userServiceImpl.setMailSender(mockMailSender);
 		
@@ -147,7 +146,7 @@ public class UserServiceTest {
 		when(mockUserDao.getAll()).thenReturn(this.users);
 		userServiceImpl.setUserDao(mockUserDao);
 		
-		userServiceImpl.setUserLevelUpgradePolicy(this.userServiceImpl.getUserLevelUpgradePolicy());
+		userServiceImpl.setUserLevelUpgradePolicy(((UserServiceImpl)this.userService).getUserLevelUpgradePolicy());
 		((UserLevelUpgradePolicyImpl)userServiceImpl.getUserLevelUpgradePolicy()).setUserDao(mockUserDao);
 		
 		MailSender mockMailSender = mock(MailSender.class);
@@ -207,14 +206,10 @@ public class UserServiceTest {
 		private static final long serialVersionUID = 122233494726214926L;
 	}
 
-	static class TestUserService extends UserServiceImpl {
+	static class TestUserServiceImpl extends UserServiceImpl {
 		
-		private String id;
+		private String id = "hdkang";
 		
-		private TestUserService(String id) {
-			this.id = id;
-		}
-
 		@Override
 		protected void upgradeLevel(User user) {
 			if (user.getId().equals(this.id)) throw new TestUserServiceException();
@@ -225,20 +220,11 @@ public class UserServiceTest {
 
 	@Test @DirtiesContext
 	public void upgradeAllOrNothing() throws Exception {
-		TestUserService testUserService = new TestUserService(users.get(3).getId());
-		testUserService.setUserDao(this.userDao);
-		testUserService.setUserLevelUpgradePolicy(userServiceImpl.getUserLevelUpgradePolicy());
-		testUserService.setMailSender(mailSender);
-		
-		ProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", ProxyFactoryBean.class);
-		txProxyFactoryBean.setTarget(testUserService);
-		UserService txUserService = (UserService)txProxyFactoryBean.getObject();
-		
 		userDao.deleteAll();
 		for (User user : users) userDao.add(user);
 		
 		try {
-			txUserService.upgradeLevels();
+			this.testUserService.upgradeLevels();
 			fail("TestUserServiceException expected.");
 		}
 		catch(Exception e) {
