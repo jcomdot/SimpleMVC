@@ -85,6 +85,7 @@ public class UserServiceTest {
 	@Autowired ApplicationContext context;
 	@Autowired UserService userService;
 	@Autowired UserService testUserService;
+	@Autowired UserLevelUpgradePolicy userLevelUpgradePolicy;
 	@Autowired UserDao userDao;
 	@Autowired PlatformTransactionManager transactionManager;
 	@Autowired MailSender mailSender;
@@ -124,7 +125,7 @@ public class UserServiceTest {
 		userServiceImpl.setUserDao(mockUserDao);
 		
 		MockMailSender mockMailSender = new MockMailSender();
-		userServiceImpl.setUserLevelUpgradePolicy(((UserServiceImpl)this.userService).getUserLevelUpgradePolicy());
+		userServiceImpl.setUserLevelUpgradePolicy(this.userLevelUpgradePolicy);
 		((UserLevelUpgradePolicyImpl)userServiceImpl.getUserLevelUpgradePolicy()).setUserDao(mockUserDao);
 		userServiceImpl.setMailSender(mockMailSender);
 		
@@ -146,7 +147,7 @@ public class UserServiceTest {
 		when(mockUserDao.getAll()).thenReturn(this.users);
 		userServiceImpl.setUserDao(mockUserDao);
 		
-		userServiceImpl.setUserLevelUpgradePolicy(((UserServiceImpl)this.userService).getUserLevelUpgradePolicy());
+		userServiceImpl.setUserLevelUpgradePolicy(this.userLevelUpgradePolicy);
 		((UserLevelUpgradePolicyImpl)userServiceImpl.getUserLevelUpgradePolicy()).setUserDao(mockUserDao);
 		
 		MailSender mockMailSender = mock(MailSender.class);
@@ -206,7 +207,7 @@ public class UserServiceTest {
 		private static final long serialVersionUID = 122233494726214926L;
 	}
 
-	static class TestUserServiceImpl extends UserServiceImpl {
+	static class TestUserService extends UserServiceImpl {
 		
 		private String id = "hdkang";
 		
