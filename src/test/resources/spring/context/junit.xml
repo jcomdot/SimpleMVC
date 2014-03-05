@@ -2,8 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<bean id="userService" class="com.jcomdot.simplemvc.UserServiceImpl">
 		<property name="userDao" ref="userDao"></property>
@@ -30,11 +32,15 @@
 		<property name="password" value="test"></property>
 	</bean>
 
-	<bean id="transactionAdvice" class="com.jcomdot.simplemvc.TransactionAdvice">
-		<property name="transactionManager" ref="transactionManager" />
-	</bean>
 	<aop:config>
 		<aop:pointcut expression="execution(* *..*ServiceImpl.upgrade*(..))" id="transactionPointcut" />
 		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut" />
 	</aop:config>
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" timeout="30" />
+			<tx:method name="upgrade*" propagation="REQUIRES_NEW" isolation="SERIALIZABLE" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
 </beans>
