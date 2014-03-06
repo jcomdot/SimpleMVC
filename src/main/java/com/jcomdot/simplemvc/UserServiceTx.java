@@ -1,5 +1,7 @@
 package com.jcomdot.simplemvc;
 
+import java.util.List;
+
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -35,4 +37,15 @@ public class UserServiceTx implements UserService {
 		}
 	}
 
+	@Override
+	public void update(User user) { userService.update(user); }
+
+	@Override
+	public User get(String id) { return userService.get(id); }
+
+	@Override
+	public List<User> getAll() { return userService.getAll(); }
+
+	@Override
+	public void deleteAll() { userService.deleteAll(); }
 }
