@@ -33,15 +33,16 @@
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
-<!--  	<aop:config> -->
-<!-- 		<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)" /> -->
-<!-- 	</aop:config> -->
-	
+<!--  	<aop:config>
+		<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)" />
+	</aop:config>
+ -->	
 	<tx:annotation-driven />
-<!-- 	<tx:advice id="transactionAdvice"> -->
-<!-- 		<tx:attributes> -->
-<!-- 			<tx:method name="get*" read-only="true" /> -->
-<!-- 			<tx:method name="*" /> -->
-<!-- 		</tx:attributes> -->
-<!-- 	</tx:advice> -->
-</beans>
+<!-- 	<tx:advice id="transactionAdvice">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+ -->
+ </beans>
