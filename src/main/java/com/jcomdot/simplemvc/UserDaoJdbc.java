@@ -3,6 +3,7 @@ package com.jcomdot.simplemvc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -12,11 +13,16 @@ import org.springframework.jdbc.core.RowMapper;
 public class UserDaoJdbc implements UserDao {
 
 	private JdbcTemplate jdbcTemplate;
+	private Map<String, String> sqlMap;
 	
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
+	public void setSqlMap(Map<String, String> sqlMap) {
+		this.sqlMap = sqlMap;
+	}
+
 	private RowMapper<User> rowMapper = 
 		new RowMapper<User>() {
 			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -34,35 +40,36 @@ public class UserDaoJdbc implements UserDao {
 
 	@Override
 	public void add(User user) {
-		this.jdbcTemplate.update("insert into users(id, name, password, level, login, recommend, email) values(?, ?, ?, ?, ?, ?, ?)",
-				user.id, user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getEmail());
+		this.jdbcTemplate.update(this.sqlMap.get("add"),
+				user.id, user.getName(), user.getPassword(), user.getEmail(),
+				user.getLevel().intValue(), user.getLogin(), user.getRecommend());
 	}
 
 	@Override
 	public void update(User user) {
-		this.jdbcTemplate.update("update users set name = ?, password = ?, level = ?, login = ?, recommend = ?, email = ? " + 
-			"where id = ?", user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(),
-			user.getRecommend(), user.getEmail(), user.getId());
+		this.jdbcTemplate.update(this.sqlMap.get("update"), 
+				user.getName(), user.getPassword(), user.getEmail(),
+				user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getId());
 	}
 
 	@Override
 	public User get(String id) {
-		return this.jdbcTemplate.queryForObject("select * from users where id = ?", new Object[] {id}, this.rowMapper);
+		return this.jdbcTemplate.queryForObject(this.sqlMap.get("get"), new Object[] {id}, this.rowMapper);
 	}
 
 	@Override
 	public List<User> getAll() {
-		return this.jdbcTemplate.query("select * from users", this.rowMapper);
+		return this.jdbcTemplate.query(this.sqlMap.get("getAll"), this.rowMapper);
 	}
 
 	@Override
 	public void deleteAll() {
-		this.jdbcTemplate.update("delete from users");
+		this.jdbcTemplate.update(this.sqlMap.get("deleteAll"));
 	}
 
 	@Override
 	public int getCount() {
-		return this.jdbcTemplate.queryForObject("select count(*) from users", Integer.class);
+		return this.jdbcTemplate.queryForObject(this.sqlMap.get("getCount"), Integer.class);
 	}
 
 }
