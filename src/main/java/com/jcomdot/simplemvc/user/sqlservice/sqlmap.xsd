@@ -8,8 +8,8 @@
     			<element name="sql" maxOccurs="unbounded" type="tns:sqlType" />
     		</sequence>
     	</complexType>
-   	</element>
-   	<complexType name="sqlType">
+    </element>
+    <complexType name="sqlType">
    		<simpleContent>
    			<extension base="string">
    				<attribute name="key" use="required" type="string" />

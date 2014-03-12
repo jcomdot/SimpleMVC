@@ -1,7 +1,7 @@
 <root>
   <facet id="jpt.jaxb">
     <node name="classgen">
-      <attribute name="package" value="com.jcomdot.simplemvc.user.sqlservice.jaxb"/>
+      <attribute name="package" value="com.jcomdot.gpx.jaxb"/>
     </node>
   </facet>
 </root>
