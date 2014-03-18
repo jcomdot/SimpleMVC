@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sqlmap xmlns="http://www.jcomdot.com/sqlmap"
+<sqlmap xmlns="http://www.jcomdot.com/schema/sqlmap"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.jcomdot.com/sqlmap http://www.jcomdot.com/sqlmap/sqlmap.xsd ">
+	xsi:schemaLocation="http://www.jcomdot.com/schema/sqlmap http://www.jcomdot.com/schema/sqlmap/sqlmap.xsd ">
   <sql key="add">insert</sql>
   <sql key="get">select</sql>
   <sql key="delete">delete</sql>
