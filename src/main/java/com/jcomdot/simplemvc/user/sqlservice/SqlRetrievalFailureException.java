@@ -4,6 +4,10 @@ public class SqlRetrievalFailureException extends RuntimeException {
 
 	private static final long serialVersionUID = 6738974321231132481L;
 
+	public SqlRetrievalFailureException(RuntimeException e) {
+		super(e);
+	}
+	
 	public SqlRetrievalFailureException(String message) {
 		super(message);
 	}

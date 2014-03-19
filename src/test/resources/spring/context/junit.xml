@@ -17,6 +17,8 @@
 
 	<bean id="sqlService"
 		class="com.jcomdot.simplemvc.user.sqlservice.XmlSqlService">
+		<property name="sqlReader" ref="sqlService"></property>
+		<property name="sqlRegistry" ref="sqlService"></property>
 		<property name="sqlmapFile" value="sqlmap.xml"></property>
 	</bean>
 
