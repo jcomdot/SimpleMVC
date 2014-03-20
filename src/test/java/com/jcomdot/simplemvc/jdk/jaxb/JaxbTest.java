@@ -34,6 +34,7 @@ public class JaxbTest {
 		List<SqlType> sqlList = sqlmap.getSql();
 		
 		assertThat(sqlList.size(), is(3));
+		assertThat(sqlList.size(), is(3));
 		assertThat(sqlList.get(0).getKey(), is("add"));
 		assertThat(sqlList.get(0).getValue(), is("insert"));
 		assertThat(sqlList.get(1).getKey(), is("get"));
