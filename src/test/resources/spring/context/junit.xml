@@ -15,12 +15,14 @@
 		<property name="mailSender" ref="mailSender"></property>
 	</bean>
 
-	<bean id="sqlService"
-		class="com.jcomdot.simplemvc.user.sqlservice.XmlSqlService">
-		<property name="sqlReader" ref="sqlService"></property>
-		<property name="sqlRegistry" ref="sqlService"></property>
-		<property name="sqlmapFile" value="sqlmap.xml"></property>
+	<bean id="sqlService" class="com.jcomdot.simplemvc.user.sqlservice.BaseSqlService">
+		<property name="sqlReader" ref="sqlReader"></property>
+		<property name="sqlRegistry" ref="sqlRegistry"></property>
 	</bean>
+	<bean id="sqlReader" class="com.jcomdot.simplemvc.user.sqlservice.JaxbXmlSqlReader">
+		<property name="sqlmapFile" value="sqlmap.xml" />
+	</bean>
+	<bean id="sqlRegistry" class="com.jcomdot.simplemvc.user.sqlservice.HashMapSqlRegistry" />
 
 	<bean id="testUserService" class="com.jcomdot.simplemvc.UserServiceTest$TestUserService" parent="userService" />
 
