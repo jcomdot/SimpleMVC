@@ -12,7 +12,9 @@ import com.jcomdot.simplemvc.user.sqlservice.jaxb.Sqlmap;
 
 public class JaxbXmlSqlReader implements SqlReader {
 
-	public String sqlmapFile;
+	private static final String DEFAULT_SQLMAP_FILE = "sqlmap.xml";
+	
+	public String sqlmapFile = DEFAULT_SQLMAP_FILE;
 	
 	public void setSqlmapFile(String sqlmapFile) { this.sqlmapFile = sqlmapFile; }
 	
