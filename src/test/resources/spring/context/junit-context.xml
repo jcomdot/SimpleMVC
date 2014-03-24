@@ -15,7 +15,12 @@
 		<property name="mailSender" ref="mailSender"></property>
 	</bean>
 
-	<bean id="sqlService" class="com.jcomdot.simplemvc.user.sqlservice.DefaultSqlService" />
+	<bean id="sqlService" class="com.jcomdot.simplemvc.user.sqlservice.OxmSqlService">
+		<property name="unmarshaller" ref="unmarshaller" />
+	</bean>
+	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPath" value="com.jcomdot.simplemvc.user.sqlservice.jaxb" />
+	</bean>
 
 	<bean id="testUserService" class="com.jcomdot.simplemvc.UserServiceTest$TestUserService" parent="userService" />
 
