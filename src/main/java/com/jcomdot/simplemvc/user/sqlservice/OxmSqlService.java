@@ -6,9 +6,9 @@ import javax.annotation.PostConstruct;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
+import org.springframework.core.io.Resource;
 import org.springframework.oxm.Unmarshaller;
 
-import com.jcomdot.simplemvc.UserDao;
 import com.jcomdot.simplemvc.user.sqlservice.jaxb.SqlType;
 import com.jcomdot.simplemvc.user.sqlservice.jaxb.Sqlmap;
 
@@ -23,7 +23,7 @@ public class OxmSqlService implements SqlService {
 	}
 	
 	public void setUnmarshaller(Unmarshaller unmarshaller) { this.oxmSqlReader.setUnmarshaller(unmarshaller); }
-	public void setSqlmapFile(String sqlmapFile) { this.oxmSqlReader.setSqlmapFile(sqlmapFile); }
+	public void setSqlmap(Resource sqlmap) { this.oxmSqlReader.setSqlmap(sqlmap); }
 
 	@PostConstruct
 	public void loadSql() { 
@@ -40,23 +40,22 @@ public class OxmSqlService implements SqlService {
 
 	public class OxmSqlReader implements SqlReader {
 		private Unmarshaller unmarshaller;
-		private final static String DEFAULT_SQLMAP_FILE = "sqlmap.xml";
-		private String sqlmapFile = DEFAULT_SQLMAP_FILE;
+		private Resource sqlmap;
 		
 		public void setUnmarshaller(Unmarshaller unmarshaller) { this.unmarshaller = unmarshaller; }
-		public void setSqlmapFile(String sqlmapFile) { this.sqlmapFile = sqlmapFile; }
+		public void setSqlmap(Resource sqlmap) { this.sqlmap = sqlmap; }
 
 		@Override
 		public void read(SqlRegistry sqlRegistry) {
 			try {
-				Source source = new StreamSource(UserDao.class.getResourceAsStream(this.sqlmapFile));
+				Source source = new StreamSource(sqlmap.getInputStream());
 				Sqlmap sqlmap = (Sqlmap)this.unmarshaller.unmarshal(source);
 				
 				for (SqlType sql : sqlmap.getSql()) {
 					sqlRegistry.registerSql(sql.getKey(), sql.getValue());
 				}
 			} catch (IOException e) {
-				throw new IllegalArgumentException(this.sqlmapFile + "을 가져올 수 없습니다", e);
+				throw new IllegalArgumentException(this.sqlmap.getFilename() + "을 가져올 수 없습니다", e);
 			}
 		}
 

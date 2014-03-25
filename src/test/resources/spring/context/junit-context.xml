@@ -17,6 +17,7 @@
 
 	<bean id="sqlService" class="com.jcomdot.simplemvc.user.sqlservice.OxmSqlService">
 		<property name="unmarshaller" ref="unmarshaller" />
+		<property name="sqlmap" value="classpath:com/jcomdot/simplemvc/sqlmap.xml" />
 	</bean>
 	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 		<property name="contextPath" value="com.jcomdot.simplemvc.user.sqlservice.jaxb" />
