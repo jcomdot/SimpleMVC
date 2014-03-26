@@ -10,17 +10,16 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<bean id="userService" class="com.jcomdot.simplemvc.UserServiceImpl">
-		<property name="userDao" ref="userDao"></property>
-		<property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"></property>
-		<property name="mailSender" ref="mailSender"></property>
+		<property name="userDao" ref="userDao" />
+		<property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy" />
+		<property name="mailSender" ref="mailSender" />
 	</bean>
 
 	<bean id="sqlService"
 		class="com.jcomdot.simplemvc.user.sqlservice.OxmSqlService">
 		<property name="unmarshaller" ref="unmarshaller" />
 		<property name="sqlmap" value="classpath:com/jcomdot/simplemvc/sqlmap.xml" />
-		<property name="sqlRegistry" ref="sqlRegistry">
-		</property>
+		<property name="sqlRegistry" ref="sqlRegistry" />
 	</bean>
 	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 		<property name="contextPath" value="com.jcomdot.simplemvc.user.sqlservice.jaxb" />
