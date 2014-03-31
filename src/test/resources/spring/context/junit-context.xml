@@ -17,8 +17,7 @@
 		<property name="mailSender" ref="mailSender" />
 	</bean>
 
-	<bean id="sqlService"
-		class="com.jcomdot.simplemvc.user.sqlservice.OxmSqlService">
+	<bean id="sqlService" class="com.jcomdot.simplemvc.user.sqlservice.OxmSqlService">
 		<property name="unmarshaller" ref="unmarshaller" />
 		<property name="sqlmap" value="classpath:com/jcomdot/simplemvc/sqlmap.xml" />
 		<property name="sqlRegistry" ref="sqlRegistry" />

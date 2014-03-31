@@ -6,6 +6,10 @@ import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.jcomdot.simplemvc.user.sqlservice.SqlNotFoundException;
 import com.jcomdot.simplemvc.user.sqlservice.SqlUpdateFailureException;
@@ -14,9 +18,11 @@ import com.jcomdot.simplemvc.user.sqlservice.UpdatableSqlRegistry;
 public class EmbeddedDbSqlRegistry implements UpdatableSqlRegistry {
 
 	JdbcTemplate jdbc;
+	TransactionTemplate transactionTemplate;
 	
 	public void setDataSource(DataSource dataSource) {
 		jdbc = new JdbcTemplate(dataSource);
+		transactionTemplate = new TransactionTemplate(new DataSourceTransactionManager(dataSource));
 	}
 	
 	@Override
@@ -26,7 +32,6 @@ public class EmbeddedDbSqlRegistry implements UpdatableSqlRegistry {
 
 	@Override
 	public String findSql(String key) throws SqlNotFoundException {
-		// TODO Auto-generated method stub
 		try {
 			return jdbc.queryForObject("select sql_ from sqlmap where key_ = ?", String.class, key);
 		} catch (EmptyResultDataAccessException e) {
@@ -43,11 +48,14 @@ public class EmbeddedDbSqlRegistry implements UpdatableSqlRegistry {
 	}
 
 	@Override
-	public void updateSql(Map<String, String> sqlmap) throws SqlUpdateFailureException {
-		for (Map.Entry<String, String> entry : sqlmap.entrySet()) {
-			updateSql(entry.getKey(), entry.getValue());
-		}
-
+	public void updateSql(final Map<String, String> sqlmap) throws SqlUpdateFailureException {
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+				for (Map.Entry<String, String> entry : sqlmap.entrySet()) {
+					updateSql(entry.getKey(), entry.getValue());
+				}
+			}
+		});
 	}
 
 }

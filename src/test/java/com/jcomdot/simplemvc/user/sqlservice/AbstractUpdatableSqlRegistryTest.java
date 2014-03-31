@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public abstract class AbstractUpdatableSqlRegistryTest {
 
-	UpdatableSqlRegistry sqlRegistry;
+	protected UpdatableSqlRegistry sqlRegistry;
 	
 	@Before
 	public void setUp() throws Exception {
