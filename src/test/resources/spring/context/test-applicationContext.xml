@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<bean id="userService" class="com.jcomdot.simplemvc.UserServiceImpl">
+		<property name="userDao" ref="userDao"></property>
+		<property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"></property>
+		<property name="mailSender" ref="mailSender"></property>
+	</bean>
+
+	<bean id="sqlService" class="com.jcomdot.simplemvc.user.sqlservice.DefaultSqlService" />
+
+	<bean id="testUserService" class="com.jcomdot.simplemvc.UserServiceTest$TestUserService" parent="userService" />
+
+	<bean id="userDao" class="com.jcomdot.simplemvc.UserDaoJdbc">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sqlService" ref="sqlService"></property>
+	</bean>
+	
+	<bean id="userLevelUpgradePolicy" class="com.jcomdot.simplemvc.UserLevelUpgradePolicyImpl">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	
+	<bean id="mailSender" class="com.jcomdot.simplemvc.DummyMailSender" />
+
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="org.postgresql.Driver"></property>
+		<property name="url" value="jdbc:postgresql://localhost/testdb"></property>
+		<property name="username" value="spring"></property>
+		<property name="password" value="test"></property>
+	</bean>
+
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<tx:annotation-driven />
+	<context:annotation-config />
+</beans>

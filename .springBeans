@@ -9,8 +9,9 @@
 	<configs>
 		<config>src/main/resources/spring/context/applicationContext.xml</config>
 		<config>src/test/resources/spring/context/FactoryBeanTest-context.xml</config>
-		<config>src/test/resources/spring/context/junit-context.xml</config>
 		<config>src/test/java/com/jcomdot/simplemvc/jdk/jaxb/OxmTest-context.xml</config>
+		<config>src/test/resources/spring/context/junit-context.xml</config>
+		<config>src/test/resources/spring/context/test-applicationContext.xml</config>
 	</configs>
 	<configSets>
 	</configSets>
