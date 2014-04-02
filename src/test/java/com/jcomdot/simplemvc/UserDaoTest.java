@@ -25,9 +25,11 @@ import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import spring.context.TestApplicationContext;
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath*:**/test-applicationContext.xml")
-public class HomeControllerTest2 {
+@ContextConfiguration(classes=TestApplicationContext.class)
+public class UserDaoTest {
 
 	@Autowired private UserDao dao;
 	@Autowired private DataSource dataSource;
@@ -51,6 +53,7 @@ public class HomeControllerTest2 {
 
 	@After
 	public void tearDown() throws Exception {
+		this.dao.deleteAll();
 	}
 
 	@Test(expected=EmptyResultDataAccessException.class)
@@ -59,7 +62,7 @@ public class HomeControllerTest2 {
 		this.dao.deleteAll();
 		assertThat(this.dao.getCount(), is(0));
 		
-		this.dao.getAll();
+		this.dao.get(this.user1.getId());
 	}
 	
 	@Test
@@ -162,12 +165,14 @@ public class HomeControllerTest2 {
 	
 	@Test(expected=DataAccessException.class)
 	public void duplicateKey() {
+		this.dao.add(this.user1);
 		User user = new User("jhwatson", "Watson", "John", Level.BASIC, 1, 0, "jhwatson@jcomdot.com");
 		this.dao.add(user);
 	}
 	
 	@Test(expected=DuplicateKeyException.class)
 	public void duplicateKeyWithoutExceptionExpected() {
+		this.dao.add(this.user2);
 		User user = new User("shholmes", "Sherlock", "Holmes", Level.SILVER, 55, 10, "shholmes@jcomdot.com");
 		this.dao.add(user);
 	}
@@ -196,6 +201,7 @@ public class HomeControllerTest2 {
 		User user = new User("jsjang", "Joonsong Jang", "test", Level.GOLD, 120, 50, "jsjang@jcomdot.com");
 
 		try {
+			this.dao.deleteAll();
 			this.dao.add(user);
 			assertThat(this.dao.getCount(), is(1));
 //			logger.debug("등록 성공!!!");
