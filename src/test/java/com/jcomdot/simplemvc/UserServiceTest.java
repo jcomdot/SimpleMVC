@@ -216,7 +216,7 @@ public class UserServiceTest {
 		private static final long serialVersionUID = 122233494726214926L;
 	}
 
-	static class TestUserService extends UserServiceImpl {
+	public static class TestUserService extends UserServiceImpl {
 		
 		private String id = "hdkang";
 		
