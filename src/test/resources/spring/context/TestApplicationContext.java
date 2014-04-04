@@ -5,7 +5,9 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 import javax.sql.DataSource;
 
 import org.postgresql.Driver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -25,7 +27,10 @@ import com.jcomdot.simplemvc.user.sqlservice.updatable.EmbeddedDbSqlRegistry;
 
 @Configuration
 @EnableTransactionManagement
+@ComponentScan(basePackages="com.jcomdot.simplemvc")
 public class TestApplicationContext {
+	
+	@Autowired UserDao userDao;
 	
 	@Bean
 	public DataSource dataSource() {
@@ -47,23 +52,9 @@ public class TestApplicationContext {
 	}
 
 	@Bean
-	public UserDao userDao() {
-		return new UserDaoJdbc();
-	}
-
-	@Bean
-	public UserService userService() {
-		UserServiceImpl service = new UserServiceImpl();
-		service.setUserDao(userDao());
-		service.setUserLevelUpgradePolicy(userLevelUpgradePolicy());
-		service.setMailSender(mailSender());
-		return service;
-	}
-
-	@Bean
 	public UserService testUserService() {
 		TestUserService testService = new TestUserService();
-		testService.setUserDao(userDao());
+		testService.setUserDao(this.userDao);
 		testService.setUserLevelUpgradePolicy(userLevelUpgradePolicy());
 		testService.setMailSender(mailSender());
 		return testService;
@@ -72,7 +63,7 @@ public class TestApplicationContext {
 	@Bean
 	public UserLevelUpgradePolicy userLevelUpgradePolicy() {
 		UserLevelUpgradePolicyImpl userLevelUpgradePolicy = new UserLevelUpgradePolicyImpl();
-		userLevelUpgradePolicy.setUserDao(userDao());
+		userLevelUpgradePolicy.setUserDao(this.userDao);
 		return userLevelUpgradePolicy;
 	}
 

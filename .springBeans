@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
-	<pluginVersion><![CDATA[3.4.0.201310051539-RELEASE]]></pluginVersion>
+	<pluginVersion><![CDATA[3.5.0.201404011509-RELEASE]]></pluginVersion>
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
@@ -11,8 +11,11 @@
 		<config>src/test/resources/spring/context/FactoryBeanTest-context.xml</config>
 		<config>src/test/java/com/jcomdot/simplemvc/jdk/jaxb/OxmTest-context.xml</config>
 		<config>src/test/resources/spring/context/junit-context.xml</config>
-		<config>src/test/resources/spring/context/test-applicationContext.xml</config>
 	</configs>
+	<autoconfigs>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
+	</autoconfigs>
 	<configSets>
 	</configSets>
 </beansProjectDescription>
