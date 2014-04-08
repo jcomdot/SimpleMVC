@@ -1,8 +1,10 @@
 package com.jcomdot.simplemvc;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class UserLevelUpgradePolicyImpl implements UserLevelUpgradePolicy {
 
-	private UserDao userDao;
+	@Autowired private UserDao userDao;
 	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;

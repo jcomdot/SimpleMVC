@@ -31,10 +31,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import spring.context.TestApplicationContext;
+import spring.context.AppContext;
+import spring.context.TestAppContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=TestApplicationContext.class)
+@ContextConfiguration(classes={TestAppContext.class, AppContext.class})
 @Transactional
 @TransactionConfiguration(defaultRollback=false)
 public class UserServiceTest {
