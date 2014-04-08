@@ -14,11 +14,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.jcomdot.simplemvc.UserDao;
+import com.jcomdot.simplemvc.UserLevelUpgradePolicy;
+import com.jcomdot.simplemvc.UserLevelUpgradePolicyImpl;
 
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages="com.jcomdot.simplemvc")
-@Import(SqlServiceContext.class)
+@Import({SqlServiceContext.class, TestAppContext.class, ProductionAppContext.class})
 public class AppContext {
 	
 	@Autowired UserDao userDao;
@@ -41,5 +43,10 @@ public class AppContext {
 		tm.setDataSource(dataSource());
 		return tm;
 	}
-
+	
+	@Bean
+	public UserLevelUpgradePolicy userLevelUpgradePolicy() {
+		return new UserLevelUpgradePolicyImpl();
+	}
+	
 }
