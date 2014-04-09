@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.mail.MailException;
@@ -278,6 +279,17 @@ public class UserServiceTest {
 	@Test
 	public void advisorAutoProxyCreator() {
 		assertThat(testUserService, instanceOf(java.lang.reflect.Proxy.class));
+	}
+
+	@Autowired DefaultListableBeanFactory bf;
+	
+	@Test
+	public void beans() {
+		System.out.println("===Beans list(Start)================================================================");
+		for (String n : bf.getBeanDefinitionNames()) {
+			System.out.println(n + " \t " + bf.getBean(n).getClass().getName());
+		}
+		System.out.println("===Beans list(End)==================================================================");
 	}
 	
 }
