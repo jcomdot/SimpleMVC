@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.MailSender;
@@ -20,6 +22,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.jcomdot.simplemvc.DummyMailSender;
+import com.jcomdot.simplemvc.SqlMapConfig;
+import com.jcomdot.simplemvc.UserDao;
 import com.jcomdot.simplemvc.UserLevelUpgradePolicy;
 import com.jcomdot.simplemvc.UserLevelUpgradePolicyImpl;
 import com.jcomdot.simplemvc.UserService;
@@ -30,7 +34,12 @@ import com.jcomdot.simplemvc.UserServiceTest.TestUserService;
 @ComponentScan(basePackages="com.jcomdot.simplemvc")
 @Import(SqlServiceContext.class)
 @PropertySource("classpath:/com/jcomdot/simplemvc/prop/database.properties")
-public class AppContext {
+public class AppContext implements SqlMapConfig {
+
+	@Override
+	public Resource getSqlMapResource() {
+		return new ClassPathResource("/com/jcomdot/simplemvc/sqlmap.xml", UserDao.class);
+	}
 	
 	@Value("${db.driverClass}") Class<? extends Driver> driverClass;
 	@Value("${db.url}") String url;

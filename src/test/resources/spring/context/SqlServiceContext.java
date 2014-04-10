@@ -4,14 +4,14 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
+import com.jcomdot.simplemvc.SqlMapConfig;
 import com.jcomdot.simplemvc.user.sqlservice.OxmSqlService;
 import com.jcomdot.simplemvc.user.sqlservice.SqlRegistry;
 import com.jcomdot.simplemvc.user.sqlservice.SqlService;
@@ -20,14 +20,14 @@ import com.jcomdot.simplemvc.user.sqlservice.updatable.EmbeddedDbSqlRegistry;
 @Configuration
 public class SqlServiceContext {
 	
+	@Autowired SqlMapConfig sqlMapConfig;
+	
 	@Bean
 	public SqlService sqlService() {
 		OxmSqlService sqlService = new OxmSqlService();
 		sqlService.setUnmarshaller(unmarshaller());
 		sqlService.setSqlRegistry(sqlRegistry());
-		Resource resource 
-			= new DefaultResourceLoader().getResource("classpath:com/jcomdot/simplemvc/sqlmap.xml");
-		sqlService.setSqlmap(resource);
+		sqlService.setSqlmap(this.sqlMapConfig.getSqlMapResource());
 		return sqlService;
 	}
 	
