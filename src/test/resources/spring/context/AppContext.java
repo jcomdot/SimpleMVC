@@ -1,13 +1,17 @@
 package spring.context;
 
+import java.sql.Driver;
+
 import javax.sql.DataSource;
 
-import org.postgresql.Driver;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.MailSender;
@@ -25,18 +29,29 @@ import com.jcomdot.simplemvc.UserServiceTest.TestUserService;
 @EnableTransactionManagement
 @ComponentScan(basePackages="com.jcomdot.simplemvc")
 @Import(SqlServiceContext.class)
+@PropertySource("classpath:/com/jcomdot/simplemvc/prop/database.properties")
 public class AppContext {
+	
+	@Value("${db.driverClass}") Class<? extends Driver> driverClass;
+	@Value("${db.url}") String url;
+	@Value("${db.username}") String username;
+	@Value("${db.password}") String password;
+	
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+		return new PropertySourcesPlaceholderConfigurer();
+	}
 	
 	@Bean
 	public DataSource dataSource() {
-		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+		SimpleDriverDataSource ds = new SimpleDriverDataSource();
 		
-		dataSource.setDriverClass(Driver.class);
-		dataSource.setUrl("jdbc:postgresql://localhost/testdb");
-		dataSource.setUsername("spring");
-		dataSource.setPassword("test");
+		ds.setDriverClass(this.driverClass);
+		ds.setUrl(this.url);
+		ds.setUsername(this.username);
+		ds.setPassword(this.password);
 		
-		return dataSource;
+		return ds;
 	}
 
 	@Bean
