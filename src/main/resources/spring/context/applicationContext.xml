@@ -3,33 +3,30 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<!-- 	<bean id="actorDao" class="com.jcomdot.simplemvc.ActorDaoJdbc"> -->
-<!-- 		<property name="dataSource" ref="dataSource"></property> -->
-<!-- 	</bean> -->
-
 	<bean id="userService" class="com.jcomdot.simplemvc.UserServiceImpl">
-		<property name="userDao" ref="userDao"></property>
-		<property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"></property>
-		<property name="mailSender" ref="mailSender"></property>
+		<property name="userDao" ref="userDao" />
+		<property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy" />
+		<property name="mailSender" ref="mailSender" />
 	</bean>
 
 	<bean id="userDao" class="com.jcomdot.simplemvc.UserDaoJdbc">
-		<property name="dataSource" ref="dataSource"></property>
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<bean id="userLevelUpgradePolicy" class="com.jcomdot.simplemvc.UserLevelUpgradePolicyImpl">
-		<property name="userDao" ref="userDao"></property>
+		<property name="userDao" ref="userDao" />
 	</bean>
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"></property>
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="mail.jcomdot.com"></property>
+		<property name="host" value="mail.jcomdot.com" />
 	</bean>
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-		<property name="driverClass" value="org.postgresql.Driver"></property>
-		<property name="url" value="jdbc:postgresql://localhost/testdb"></property>
-		<property name="username" value="spring"></property>
-		<property name="password" value="test"></property>
+		<property name="driverClass" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost/testdb" />
+		<property name="username" value="spring" />
+		<property name="password" value="test" />
 	</bean>
+	
 </beans>
