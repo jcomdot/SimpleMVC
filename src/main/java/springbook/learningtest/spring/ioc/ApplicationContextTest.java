@@ -8,21 +8,28 @@ import org.junit.Test;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
 import springbook.learningtest.spring.ioc.bean.Hello;
+import springbook.learningtest.spring.ioc.bean.Printer;
 import springbook.learningtest.spring.ioc.bean.StringPrinter;
 
-public class RegHelloBeanTest {
+public class ApplicationContextTest {
+	
+	String basePath = StringUtils.cleanPath(ClassUtils.classPackageAsResourcePath(getClass())) + "/";
 
 	@Before
 	public void setUp() throws Exception {
 	}
 
 	@Test
-	public void test() {
+	public void registerBean() {
 		StaticApplicationContext ac = new StaticApplicationContext();
 		ac.registerSingleton("hello1", Hello.class);
 		
@@ -62,7 +69,7 @@ public class RegHelloBeanTest {
 	}
 	
 	@Test
-	public void genericApplicationContext() {
+	public void genericXmlApplicationContext() {
 		GenericApplicationContext ac = new GenericXmlApplicationContext("springbook/learningtest/spring/ioc/genericApplicationContext.xml");
 		
 		Hello hello = ac.getBean("hello", Hello.class);
@@ -71,6 +78,25 @@ public class RegHelloBeanTest {
 		assertThat(ac.getBean("printer").toString(), is("Hello Spring"));
 		
 		ac.close();
+	}
+	
+	@Test
+	public void contextHierarchy() {
+		ApplicationContext parent = new GenericXmlApplicationContext(basePath + "parentContext.xml");
+		GenericApplicationContext child = new GenericApplicationContext(parent);
+		
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(child);
+		reader.loadBeanDefinitions(basePath + "childContext.xml");
+		child.refresh();
+		
+		Printer printer = child.getBean("printer", Printer.class);
+		assertThat(printer, is(notNullValue()));
+		
+		Hello hello = child.getBean("hello", Hello.class);
+		assertThat(hello, is(notNullValue()));
+		
+		hello.print();
+		assertThat(printer.toString(), is("Hello Child"));
 	}
 
 }

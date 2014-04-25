@@ -12,6 +12,8 @@
 		<config>src/test/java/com/jcomdot/simplemvc/jdk/jaxb/OxmTest-context.xml</config>
 		<config>src/test/resources/spring/context/junit-context.xml</config>
 		<config>src/main/java/springbook/learningtest/spring/ioc/genericApplicationContext.xml</config>
+		<config>src/main/java/springbook/learningtest/spring/ioc/parentContext.xml</config>
+		<config>src/main/java/springbook/learningtest/spring/ioc/childContext.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
