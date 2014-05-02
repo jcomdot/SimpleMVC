@@ -5,12 +5,14 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.context.support.StaticApplicationContext;
@@ -18,6 +20,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import springbook.learningtest.spring.ioc.bean.*;
+import springbook.learningtest.spring.ioc.config.Config;
 
 public class ApplicationContextTest {
 	
@@ -119,6 +122,29 @@ public class ApplicationContextTest {
 		assertThat(config.annotatedHello(), is(sameInstance(hello)));
 		
 		((AnnotationConfigApplicationContext)ctx).close();
+	}
+	
+	private static class BeanA {
+		@Autowired BeanB beanB;
+	}
+	private static class BeanB {
+	}
+	
+	@Test
+	public void simpleAtAutowired() {
+		AbstractApplicationContext ctx = new AnnotationConfigApplicationContext(BeanA.class, BeanB.class);
+		BeanA beanA = ctx.getBean(BeanA.class);
+		assertThat(beanA.beanB, is(notNullValue()));
+		ctx.close();
+	}
+	
+	@Test
+	public void simpleConfig() {
+		AbstractApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
+		Config config = ctx.getBean(Config.class);
+		Printer printer = ctx.getBean(Printer.class);
+		assertThat(config.printer(), is(sameInstance(printer)));
+		ctx.close();
 	}
 
 }
