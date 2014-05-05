@@ -25,7 +25,7 @@ import springbook.learningtest.spring.ioc.config.Config;
 public class ApplicationContextTest {
 	
 	String basePath = StringUtils.cleanPath(ClassUtils.classPackageAsResourcePath(getClass())) + "/";
-
+	
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -144,6 +144,14 @@ public class ApplicationContextTest {
 		Config config = ctx.getBean(Config.class);
 		Printer printer = ctx.getBean(Printer.class);
 		assertThat(config.printer(), is(sameInstance(printer)));
+		ctx.close();
+	}
+	
+	@Test
+	public void systemPropEnv() {
+		AbstractApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
+		Config config = ctx.getBean(Config.class);
+		System.out.println(config.systemInfo());
 		ctx.close();
 	}
 
