@@ -3,6 +3,9 @@ package springbook.learningtest.spring.ioc;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
@@ -153,6 +157,52 @@ public class ApplicationContextTest {
 		Config config = ctx.getBean(Config.class);
 		System.out.println(config.systemInfo());
 		ctx.close();
+	}
+	
+	@Test
+	public void singletonScope() {
+		AbstractApplicationContext ac = new AnnotationConfigApplicationContext(SingletonBean.class, SingletonClientBean.class);
+		Set<SingletonBean> beans = new HashSet<SingletonBean>();
+		
+		beans.add(ac.getBean(SingletonBean.class));
+		beans.add(ac.getBean(SingletonBean.class));
+		assertThat(beans.size(), is(1));
+		
+		beans.add(ac.getBean(SingletonClientBean.class).bean1);
+		beans.add(ac.getBean(SingletonClientBean.class).bean2);
+		assertThat(beans.size(), is(1));
+		
+		ac.close();
+	}
+	
+	static class SingletonBean {}
+	static class SingletonClientBean {
+		@Autowired SingletonBean bean1;
+		@Autowired SingletonBean bean2;
+	}
+	
+	@Test
+	public void prototypeScope() {
+		AbstractApplicationContext ac = new AnnotationConfigApplicationContext(PrototypeBean.class, PrototypeClientBean.class);
+		Set<PrototypeBean> beans = new HashSet<PrototypeBean>();
+		
+		beans.add(ac.getBean(PrototypeBean.class));
+		assertThat(beans.size(), is(1));
+		beans.add(ac.getBean(PrototypeBean.class));
+		assertThat(beans.size(), is(2));
+		beans.add(ac.getBean(PrototypeClientBean.class).bean1);
+		assertThat(beans.size(), is(3));
+		beans.add(ac.getBean(PrototypeClientBean.class).bean2);
+		assertThat(beans.size(), is(4));
+		
+		ac.close();
+	}
+	
+	@Scope("prototype")
+	static class PrototypeBean {}
+	static class PrototypeClientBean {
+		@Autowired PrototypeBean bean1;
+		@Autowired PrototypeBean bean2;
 	}
 
 }
