@@ -14,6 +14,7 @@
 		<config>src/main/java/springbook/learningtest/spring/ioc/genericApplicationContext.xml</config>
 		<config>src/main/java/springbook/learningtest/spring/ioc/parentContext.xml</config>
 		<config>src/main/java/springbook/learningtest/spring/ioc/childContext.xml</config>
+		<config>src/main/java/springbook/learningtest/spring/ioc/beanrole.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
