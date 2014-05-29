@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
-	<pluginVersion><![CDATA[3.5.0.201404011509-RELEASE]]></pluginVersion>
+	<pluginVersion><![CDATA[3.5.1.201404300732-RELEASE]]></pluginVersion>
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
@@ -15,6 +15,7 @@
 		<config>src/main/java/springbook/learningtest/spring/ioc/parentContext.xml</config>
 		<config>src/main/java/springbook/learningtest/spring/ioc/childContext.xml</config>
 		<config>src/main/java/springbook/learningtest/spring/ioc/beanrole.xml</config>
+		<config>src/main/webapp/WEB-INF/spring-servlet.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>

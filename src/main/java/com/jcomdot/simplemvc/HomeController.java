@@ -36,15 +36,9 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 
 		// DI(Dependency Injection)
-//		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 		ApplicationContext context = new GenericXmlApplicationContext("spring/context/applicationContext.xml");
 		UserDao dao = context.getBean("userDao", UserDao.class);
-//		CountingConnectionMaker ccm = context.getBean("connectionMaker", CountingConnectionMaker.class);
-//		context.close();
 		((GenericXmlApplicationContext) context).close();
-		
-		// DL(Dependency Lookup)
-//		ActorDao dao = new ActorDao();
 		
 		User user = new User("jsjang", "Joonsong Jang", "spring", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER-1, 0, "jsjang@outlook.com");
 
