@@ -129,7 +129,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>3.2.5.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
