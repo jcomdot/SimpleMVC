@@ -3,7 +3,7 @@
 
 <%@ page import="org.springframework.context.ApplicationContext" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@ page import="springbook.temp.HelloSpring" %>
+<%@ page import="springbook.learningtest.spring.web.hello.HelloSpring" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

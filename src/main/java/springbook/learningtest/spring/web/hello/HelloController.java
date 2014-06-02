@@ -1,4 +1,4 @@
-package springbook.temp;
+package springbook.learningtest.spring.web.hello;
 
 import java.util.HashMap;
 import java.util.Map;
