@@ -74,7 +74,6 @@ public class SimpleControllerTest extends AbstractDispatcherServletTest {
 			return new ModelAndView(this.viewName, model);
 		}
 
-		public abstract void control(Map<String, String> params,
-				Map<String, Object> model) throws Exception;
+		public abstract void control(Map<String, String> params, Map<String, Object> model) throws Exception;
 	}
 }
