@@ -16,6 +16,7 @@
 		<config>src/main/java/springbook/learningtest/spring/ioc/childContext.xml</config>
 		<config>src/main/java/springbook/learningtest/spring/ioc/beanrole.xml</config>
 		<config>src/main/java/springbook/learningtest/spring/web/hello/spring-servlet.xml</config>
+		<config>src/main/java/springbook/learningtest/spring/web/view/marshallingview.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
