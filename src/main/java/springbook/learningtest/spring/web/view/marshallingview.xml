@@ -14,6 +14,9 @@
 		<property name="modelKey" value="info" />
 	</bean>
 	
+	<bean id="helloPdfView" class="springbook.learningtest.spring.web.view.HelloPdfView" />
+	
 	<bean id="helloController" class="springbook.learningtest.spring.web.view.MarshallingViewTest$HelloController" />
+	<bean id="helloPdfController" class="springbook.learningtest.spring.web.view.MarshallingViewTest$HelloPdfController" />
 
 </beans>
