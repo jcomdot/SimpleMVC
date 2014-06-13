@@ -95,6 +95,12 @@ public class AbstractDispatcherServletTest implements AfterRunService {
 		return this;
 	}
 	
+	public AfterRunService runService(String requestUri) throws ServletException, IOException {
+		initRequest(requestUri);
+		runService();
+		return this;
+	}
+	
 	@Override
 	public WebApplicationContext getContext() {
 		if (this.dispatcherServlet == null) throw new IllegalStateException("DispatcherServlet이 준비되지 않았습니다.");
