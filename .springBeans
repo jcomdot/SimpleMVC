@@ -19,6 +19,7 @@
 		<config>src/main/java/springbook/learningtest/spring/web/view/marshallingview.xml</config>
 		<config>src/test/java/springbook/learningtest/spring/web/atmvc/conversionservice.xml</config>
 		<config>src/test/java/springbook/learningtest/spring/web/atmvc/mvc-annotation.xml</config>
+		<config>src/test/java/springbook/learningtest/spring/web/atmvc/messageConverter.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
