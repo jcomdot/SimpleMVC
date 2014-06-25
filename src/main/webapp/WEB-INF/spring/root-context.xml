@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
-	<import resource="messageConverter.xml" />
+<!-- 	<import resource="messageConverter.xml" /> -->
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="helloSpring" class="springbook.learningtest.spring.web.hello.HelloSpring" />
