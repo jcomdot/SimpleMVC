@@ -6,5 +6,5 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean class="springbook.learningtest.spring31.web.MvcArchitectureTest$SimpleController" />
-	<mvc:annotation-driven></mvc:annotation-driven>
+	<mvc:annotation-driven />
 </beans>
