@@ -1,6 +1,6 @@
 package springbook.learningtest.spring.web;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockServletConfig;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 public class AbstractDispatcherServletTest implements AfterRunService {
@@ -24,7 +24,7 @@ public class AbstractDispatcherServletTest implements AfterRunService {
 	protected MockServletConfig config = new MockServletConfig("spring");
 	protected MockHttpSession session;
 	
-	private ConfigurableDispatcherServlet dispatcherServlet;
+	protected ConfigurableDispatcherServlet dispatcherServlet;
 	private Class<?>[] classes;
 	private String[] locations;
 	private String[] relativeLocations;
@@ -78,7 +78,7 @@ public class AbstractDispatcherServletTest implements AfterRunService {
 	public AbstractDispatcherServletTest buildDispatcherServlet() throws ServletException {
 		if (this.classes == null && this.locations == null && this.relativeLocations == null)
 			throw new IllegalStateException("classes와  locations 중 하나는 설정해야 합니다.");
-		this.dispatcherServlet = new ConfigurableDispatcherServlet();
+		this.dispatcherServlet = createDispatcherServlet();
 		this.dispatcherServlet.setClasses(this.classes);
 		this.dispatcherServlet.setLocations(this.locations);
 		if (this.relativeLocations != null)
@@ -88,6 +88,10 @@ public class AbstractDispatcherServletTest implements AfterRunService {
 		return this;
 	}
 	
+	protected ConfigurableDispatcherServlet createDispatcherServlet() {
+		return new ConfigurableDispatcherServlet();
+	}
+
 	public AfterRunService runService() throws ServletException, IOException {
 		if (this.dispatcherServlet == null) buildDispatcherServlet();
 		if (this.request == null) throw new IllegalStateException("request가 준비되지 않았습니다.");
@@ -102,9 +106,9 @@ public class AbstractDispatcherServletTest implements AfterRunService {
 	}
 	
 	@Override
-	public WebApplicationContext getContext() {
+	public ConfigurableWebApplicationContext getContext() {
 		if (this.dispatcherServlet == null) throw new IllegalStateException("DispatcherServlet이 준비되지 않았습니다.");
-		return this.dispatcherServlet.getWebApplicationContext();
+		return (ConfigurableWebApplicationContext) this.dispatcherServlet.getWebApplicationContext();
 	}
 	
 	@Override

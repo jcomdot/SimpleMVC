@@ -23,7 +23,7 @@ public class ConfigurableDispatcherServlet extends DispatcherServlet {
 
 	private static final long serialVersionUID = 4165892207928439589L;
 
-	private Class<?>[] classes;
+	protected Class<?>[] classes;
 	private String[] locations;
 	
 	private ModelAndView modelAndView;

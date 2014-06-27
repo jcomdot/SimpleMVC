@@ -20,6 +20,7 @@
 		<config>src/test/java/springbook/learningtest/spring/web/atmvc/conversionservice.xml</config>
 		<config>src/test/java/springbook/learningtest/spring/web/atmvc/mvc-annotation.xml</config>
 		<config>src/test/java/springbook/learningtest/spring/web/atmvc/messageConverter.xml</config>
+		<config>src/test/java/springbook/learningtest/spring31/web/servlet.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
