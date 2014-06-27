@@ -17,13 +17,18 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 public class RequestConditionTest extends AbstractDispatcherServlet31Test {
 
+	@RequestMapping({"/s1", "/s2"})
+	static interface Super {
+		public String hello();
+	}
+
 	@Test
 	public void patternRC() throws ServletException {
 		setClasses(AppConfig.class, PatternController.class,
 				ParamsController.class, HeadersController.class,
 				ConsumesController.class, ProducesController.class,
 				RequestMethodController.class, Quiz4.class, Quiz5.class,
-				Quiz6.class);
+				Quiz6.class, Quiz7.class);
 		buildDispatcherServlet();
 
 		RequestMappingHandlerMapping rmhm = getBean(AppConfig.class).rmhm;
@@ -102,10 +107,10 @@ public class RequestConditionTest extends AbstractDispatcherServlet31Test {
 	@Controller
 	@RequestMapping(headers = { "a", "Content-Type=application/json",
 			"Content-Type=multipart/form-data" })
-	public static class Quiz4 {
+	public static class Quiz4 implements Super {
+		@Override
 		@RequestMapping(headers = { "c", "d" })
-		public void hello() {
-		}
+		public String hello() { return "hello.jsp"; }
 	}
 
 	@Controller
@@ -123,5 +128,12 @@ public class RequestConditionTest extends AbstractDispatcherServlet31Test {
 		@RequestMapping(consumes = { "multipart/form-data", "application/json" })
 		public void hello() {
 		}
+	}
+	
+	@Controller
+	public static class Quiz7 implements Super {
+		@Override
+		@RequestMapping(consumes = { "multipart/form-data", "application/json" })
+		public String hello() { return "hello.jsp"; }
 	}
 }
