@@ -1,4 +1,4 @@
-package spring.context;
+package com.jcomdot.simplemvc;
 
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 

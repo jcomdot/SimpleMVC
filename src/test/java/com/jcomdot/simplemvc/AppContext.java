@@ -1,4 +1,4 @@
-package spring.context;
+package com.jcomdot.simplemvc;
 
 import java.sql.Driver;
 
