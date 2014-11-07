@@ -19,6 +19,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 import com.jcomdot.simplemvc.DummyMailSender;
 import com.jcomdot.simplemvc.SqlMapConfig;
@@ -33,7 +34,7 @@ import com.jcomdot.simplemvc.UserServiceTest.TestUserService;
 @ComponentScan(basePackages="com.jcomdot.simplemvc")
 @EnableSqlService
 @PropertySource("classpath:/com/jcomdot/simplemvc/prop/database.properties")
-public class AppContext implements SqlMapConfig {
+public class AppContext implements SqlMapConfig, TransactionManagementConfigurer {
 	
 	@Value("${db.driverClass}") Class<? extends Driver> driverClass;
 	@Value("${db.url}") String url;
@@ -101,6 +102,11 @@ public class AppContext implements SqlMapConfig {
 			return new DummyMailSender();
 		}
 		
+	}
+
+	@Override
+	public PlatformTransactionManager annotationDrivenTransactionManager() {
+		return transactionManager();
 	}
 	
 }
