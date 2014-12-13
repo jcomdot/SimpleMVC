@@ -18,7 +18,7 @@ public class DummyMailSender implements MailSender {
 	}
 
 	@Override
-	public void send(SimpleMailMessage[] simpleMessages) throws MailException {
+	public void send(SimpleMailMessage... simpleMessages) throws MailException {
 		for (int i=0; i<simpleMessages.length; i++) {
 			System.out.println("email내용" + String.valueOf(i));
 			System.out.println("from: " + simpleMessages[i].getFrom());
