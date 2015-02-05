@@ -2,6 +2,7 @@ package com.jcomdot.simplemvc;
 
 import java.util.List;
 
+
 public interface ActorDao {
 	void add(Actor actor);
 	void addWithId(Actor actor);
