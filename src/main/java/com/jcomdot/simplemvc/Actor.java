@@ -9,8 +9,6 @@ public class Actor {
 	String lastName;
 	Date lastUpdate;
 	
-	
-	
 	public Actor() {
 	}
 
