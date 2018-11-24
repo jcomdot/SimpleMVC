@@ -1,6 +1,9 @@
 package springbook.learningtest.spring.ioc;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import java.util.HashSet;
@@ -23,7 +26,11 @@ import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-import springbook.learningtest.spring.ioc.bean.*;
+import springbook.learningtest.spring.ioc.bean.AnnotatedHello;
+import springbook.learningtest.spring.ioc.bean.AnnotatedHelloConfig;
+import springbook.learningtest.spring.ioc.bean.Hello;
+import springbook.learningtest.spring.ioc.bean.Printer;
+import springbook.learningtest.spring.ioc.bean.StringPrinter;
 import springbook.learningtest.spring.ioc.config.Config;
 
 public class ApplicationContextTest {
