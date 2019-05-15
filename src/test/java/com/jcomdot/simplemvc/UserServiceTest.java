@@ -30,12 +30,12 @@ import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 @ContextConfiguration(classes=AppContext.class)
 @Transactional
-@TransactionConfiguration(defaultRollback=false)
+@Commit
 public class UserServiceTest {
 
 	static class MockUserDao implements UserDao {
