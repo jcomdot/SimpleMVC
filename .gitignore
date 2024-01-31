@@ -1,1 +1,18 @@
-/target/
+HELP.md
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+.git-credentials
+.classpath
+.factorypath
+.mvn/
+.metadata/
+.project
+.settings/
+target/
+
+### STS ###
+.apt_generated
+.springBeans
+.sts4-cache
