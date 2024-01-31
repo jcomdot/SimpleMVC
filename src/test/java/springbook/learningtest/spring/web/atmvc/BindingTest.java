@@ -107,7 +107,7 @@ public class BindingTest extends AbstractDispatcherServletTest {
 		public WebBindingInitializer webBindingInitializer() {
 			return new WebBindingInitializer() {
 				@Override
-				public void initBinder(WebDataBinder binder, WebRequest request) {
+				public void initBinder(WebDataBinder binder) {
 					binder.registerCustomEditor(Level.class, new LevelPropertyEditor());
 				}
 			};

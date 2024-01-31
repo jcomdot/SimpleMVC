@@ -7,13 +7,16 @@ import javax.servlet.ServletException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
 public class RequestConditionTest extends AbstractDispatcherServlet31Test {
 
@@ -44,9 +47,11 @@ public class RequestConditionTest extends AbstractDispatcherServlet31Test {
 		RequestMappingHandlerMapping rmhm;
 
 		@Override
-		public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-			RequestMappingHandlerMapping rmhm = new RequestMappingHandlerMapping();
-			return rmhm;
+		public RequestMappingHandlerMapping requestMappingHandlerMapping(
+				ContentNegotiationManager contentNegotiationManager, FormattingConversionService conversionService,
+				ResourceUrlProvider resourceUrlProvider) {
+			// TODO Auto-generated method stub
+			return super.requestMappingHandlerMapping(contentNegotiationManager, conversionService, resourceUrlProvider);
 		}
 	}
 
